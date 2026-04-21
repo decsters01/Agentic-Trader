@@ -1,5 +1,7 @@
 # Agente Autônomo de Trading
 
+> **Editado, Melhorado e Adaptado por Gabriel Decsters**
+
 > Sistema de trading algorítmico ultra-rápido impulsionado por IA com 70% mais velocidade de execução e 79% menos custos
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
