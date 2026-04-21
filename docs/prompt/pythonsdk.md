@@ -1,45 +1,45 @@
 # Python
 
-To install the OpenAlgo Python library, use pip:
+Para instalar a biblioteca OpenAlgo Python, use pip:
 
 ```bash
 pip install openalgo
 ```
 
-### Get the OpenAlgo apikey
+### Obter a Chave de API OpenAlgo
 
-Make Sure that your OpenAlgo Application is running. Login to OpenAlgo Application with valid credentials and get the OpenAlgo apikey
+Certifique-se de que sua Aplicação OpenAlgo esteja em execução. Faça login na Aplicação OpenAlgo com credenciais válidas e obtenha a chave de API OpenAlgo.
 
-For detailed function parameters refer to the [API Documentation](https://docs.openalgo.in/api-documentation/v1)
+Para parâmetros detalhados de funções, consulte a [Documentação da API](https://docs.openalgo.in/api-documentation/v1)
 
-### Getting Started with OpenAlgo
+### Começando com OpenAlgo
 
-First, import the `api` class from the OpenAlgo library and initialize it with your API key:
+Primeiro, importe a classe `api` da biblioteca OpenAlgo e inicialize-a com sua chave de API:
 
 ```python
 from openalgo import api
 
-# Replace 'your_api_key_here' with your actual API key
-# Specify the host URL with your hosted domain or ngrok domain. 
-# If running locally in windows then use the default host value. 
-client = api(api_key='your_api_key_here', host='http://127.0.0.1:5000')
+# Substitua 'sua_chave_de_api_aqui' pela sua chave de API real
+# Especifique a URL do host com seu domínio hospedado ou domínio ngrok.
+# Se estiver executando localmente no Windows, use o valor de host padrão.
+client = api(api_key='sua_chave_de_api_aqui', host='http://127.0.0.1:5000')
 
 ```
 
-### Check OpenAlgo Version
+### Verificar Versão do OpenAlgo
 
 ```python
 import openalgo 
 openalgo.__version__
 ```
 
-### Examples
+### Exemplos
 
-Please refer to the documentation on [order constants](https://docs.openalgo.in/api-documentation/v1/order-constants), and consult the API reference for details on optional parameters
+Consulte a documentação sobre [constantes de ordem](https://docs.openalgo.in/api-documentation/v1/order-constants) e consulte a referência da API para detalhes sobre parâmetros opcionais.
 
-### PlaceOrder example
+### Exemplo PlaceOrder
 
-To place a new market order:
+Para colocar uma nova ordem a mercado:
 
 ```python
 response = client.placeorder(
@@ -55,13 +55,13 @@ print(response)
 
 ```
 
-Place Market Order Response
+Resposta de Ordem a Mercado
 
 ```json
 {'orderid': '250408000989443', 'status': 'success'}
 ```
 
-To place a new limit order:
+Para colocar uma nova ordem limitada:
 
 ```python
 response = client.placeorder(
@@ -79,15 +79,15 @@ response = client.placeorder(
 print(response)
 ```
 
-Place Limit Order Response
+Resposta de Ordem Limitada
 
 ```json
 {'orderid': '250408001003813', 'status': 'success'}
 ```
 
-### PlaceSmartOrder Example
+### Exemplo PlaceSmartOrder
 
-To place a smart order considering the current position size:
+Para colocar uma ordem inteligente considerando o tamanho atual da posição:
 
 ```python
 response = client.placesmartorder(
@@ -104,15 +104,15 @@ print(response)
 
 ```
 
-Place Smart Market Order Response
+Resposta de Ordem Inteligente a Mercado
 
 ```json
 {'orderid': '250408000997543', 'status': 'success'}
 ```
 
-### OptionsOrder Example
+### Exemplo OptionsOrder
 
-To place ATM options order
+Para colocar ordem de opções ATM (No Dinheiro)
 
 ```python
 response = client.optionsorder(
@@ -132,7 +132,7 @@ response = client.optionsorder(
 print(response)
 ```
 
-Place Options Order Response
+Resposta de Ordem de Opções
 
 ```json
 {
@@ -147,7 +147,7 @@ Place Options Order Response
 }
 ```
 
-To place ITM options order
+Para colocar ordem de opções ITM (Dentro do Dinheiro)
 
 ```python
 response = client.optionsorder(
@@ -167,7 +167,7 @@ response = client.optionsorder(
 print(response)
 ```
 
-Place Options Order Response
+Resposta de Ordem de Opções
 
 ```json
 {
@@ -182,7 +182,7 @@ Place Options Order Response
 }
 ```
 
-To place OTM options order
+Para colocar ordem de opções OTM (Fora do Dinheiro)
 
 ```python
 response = client.optionsorder(
@@ -202,7 +202,7 @@ response = client.optionsorder(
 print(response)
 ```
 
-Place Options Order Response
+Resposta de Ordem de Opções
 
 ```json
 {
@@ -218,9 +218,9 @@ Place Options Order Response
 }
 ```
 
-### BasketOrder example
+### Exemplo BasketOrder
 
-To place a new basket order:
+Para colocar uma nova ordem em cesta:
 
 ```python
 basket_orders = [
@@ -245,7 +245,7 @@ response = client.basketorder(orders=basket_orders)
 print(response)
 ```
 
-**Basket Order Response**
+**Resposta de Ordem em Cesta**
 
 ```json
 {
@@ -266,9 +266,9 @@ print(response)
 
 ```
 
-### SplitOrder example
+### Exemplo SplitOrder
 
-To place a new split order:
+Para colocar uma nova ordem fracionada:
 
 ```python
 response = client.splitorder(
@@ -284,7 +284,7 @@ print(response)
 
 ```
 
-**SplitOrder Response**
+**Resposta SplitOrder**
 
 ```json
 {
@@ -333,9 +333,9 @@ print(response)
 
 ```
 
-### ModifyOrder Example
+### Exemplo ModifyOrder
 
-To modify an existing order:
+Para modificar uma ordem existente:
 
 ```python
 response = client.modifyorder(
@@ -352,15 +352,15 @@ response = client.modifyorder(
 print(response)
 ```
 
-**Modify Order Response**
+**Resposta Modify Order**
 
 ```json
 {'orderid': '250408001002736', 'status': 'success'}
 ```
 
-### CancelOrder Example
+### Exemplo CancelOrder
 
-To cancel an existing order:
+Para cancelar uma ordem existente:
 
 ```python
 response = client.cancelorder(
@@ -370,15 +370,15 @@ response = client.cancelorder(
 print(response)
 ```
 
-**Cancelorder Response**
+**Resposta Cancelorder**
 
 ```json
 {'orderid': '250408001002736', 'status': 'success'}
 ```
 
-### CancelAllOrder Example
+### Exemplo CancelAllOrder
 
-To cancel all open orders and trigger pending orders
+Para cancelar todas as ordens abertas e acionar ordens pendentes
 
 ```python
 response = client.cancelallorder(
@@ -387,7 +387,7 @@ response = client.cancelallorder(
 print(response)
 ```
 
-**Cancelallorder Response**
+**Resposta Cancelallorder**
 
 ```json
 {
@@ -405,9 +405,9 @@ print(response)
 
 ```
 
-### ClosePosition Example
+### Exemplo ClosePosition
 
-To close all open positions across various exchanges
+Para fechar todas as posições abertas em várias exchanges
 
 ```python
 response = client.closeposition(
@@ -416,15 +416,15 @@ response = client.closeposition(
 print(response)
 ```
 
-**ClosePosition Response**
+**Resposta ClosePosition**
 
 ```json
 {'message': 'All Open Positions Squared Off', 'status': 'success'}
 ```
 
-### OrderStatus Example
+### Exemplo OrderStatus
 
-To Get the Current OrderStatus
+Para obter o Status Atual da Ordem
 
 ```python
 response = client.orderstatus(
@@ -434,7 +434,7 @@ response = client.orderstatus(
 print(response)
 ```
 
-**Orderstatus Response**
+**Resposta Orderstatus**
 
 ```json
 {
@@ -456,9 +456,9 @@ print(response)
 }
 ```
 
-### OpenPosition Example
+### Exemplo OpenPosition
 
-To Get the Current OpenPosition
+Para obter a Posição Aberta Atual
 
 ```python
 response = client.openposition(
@@ -470,20 +470,20 @@ response = client.openposition(
 print(response)
 ```
 
-OpenPosition Response
+Resposta OpenPosition
 
 ```json
 {'quantity': '-10', 'status': 'success'}
 ```
 
-### Quotes Example
+### Exemplo Quotes
 
 ```python
 response = client.quotes(symbol="RELIANCE", exchange="NSE")
 print(response)
 ```
 
-**Quotes response**
+**Resposta Quotes**
 
 ```json
 {
@@ -501,14 +501,14 @@ print(response)
 }
 ```
 
-### Depth Example
+### Exemplo Depth
 
 ```python
 response = client.depth(symbol="SBIN", exchange="NSE")
 print(response)
 ```
 
-**Depth Response**
+**Resposta Depth**
 
 ```json
 {
@@ -573,7 +573,7 @@ print(response)
 
 ```
 
-### History Example
+### Exemplo History
 
 ```python
 response = client.history(symbol="SBIN", 
@@ -585,7 +585,7 @@ response = client.history(symbol="SBIN",
 print(response)
 ```
 
-**History Response**
+**Resposta History**
 
 ```json
                             close    high     low    open  volume
@@ -605,14 +605,14 @@ timestamp
 [437 rows x 5 columns]
 ```
 
-### Intervals Example
+### Exemplo Intervals
 
 ```python
 response = client.intervals()
 print(response)
 ```
 
-**Intervals response**
+**Resposta Intervals**
 
 ```json
 {
@@ -628,7 +628,7 @@ print(response)
 }
 ```
 
-### Symbol Example
+### Exemplo Symbol
 
 ```python
 response = client.symbol(
@@ -638,7 +638,7 @@ response = client.symbol(
 print(response)
 ```
 
-**Symbols Response**
+**Resposta Symbols**
 
 ```json
 {
@@ -660,14 +660,14 @@ print(response)
 }
 ```
 
-### Search Example
+### Exemplo Search
 
 ```python
 response = client.search(query="NIFTY 25000 JUL CE",exchange="NFO")
 print(response)
 ```
 
-**Search Response**
+**Resposta Search**
 
 ```json
 {
@@ -717,9 +717,9 @@ print(response)
 }
 ```
 
-### OptionSymbol Example
+### Exemplo OptionSymbol
 
-ATM Option
+Opção ATM (No Dinheiro)
 
 ```python
 response = client.optionsymbol(
@@ -734,7 +734,7 @@ response = client.optionsymbol(
 print(response)
 ```
 
-**OptionSymbol Response**
+**Resposta OptionSymbol**
 
 ```json
 {
@@ -747,7 +747,7 @@ print(response)
 }
 ```
 
-ITM Option
+Opção ITM (Dentro do Dinheiro)
 
 ```python
 response = client.optionsymbol(
@@ -762,7 +762,7 @@ response = client.optionsymbol(
 print(response)
 ```
 
-**OptionSymbol Response**
+**Resposta OptionSymbol**
 
 ```json
 {
@@ -775,7 +775,7 @@ print(response)
 }
 ```
 
-OTM Option
+Opção OTM (Fora do Dinheiro)
 
 ```python
 response = client.optionsymbol(
@@ -790,7 +790,7 @@ response = client.optionsymbol(
 print(response)
 ```
 
-**OptionSymbol Response**
+**Resposta OptionSymbol**
 
 ```json
 {
@@ -803,7 +803,7 @@ print(response)
 }
 ```
 
-### OptionGreeks Example
+### Exemplo OptionGreeks
 
 ```python
 response = client.optiongreeks(
@@ -817,7 +817,7 @@ response = client.optiongreeks(
 print(response)
 ```
 
-OptionGreeks  **Response**
+Resposta OptionGreeks
 
 ```
 {
@@ -841,7 +841,7 @@ OptionGreeks  **Response**
 }
 ```
 
-### Expiry Example
+### Exemplo Expiry
 
 ```python
 response = client.expiry(
@@ -853,7 +853,7 @@ response = client.expiry(
 response
 ```
 
-**Expiry Response**
+**Resposta Expiry**
 
 ```
 {'data': ['10-JUL-25',
@@ -878,7 +878,7 @@ response
  'status': 'success'}
 ```
 
-### Telegram Alert Example
+### Exemplo de Alerta Telegram
 
 ```python
 response = client.telegram(
@@ -889,7 +889,7 @@ response = client.telegram(
 print(response)
 ```
 
-**Telegram Alert Response**
+**Resposta de Alerta Telegram**
 
 ```json
 {
@@ -898,14 +898,14 @@ print(response)
 }
 ```
 
-### Funds Example
+### Exemplo Funds
 
 ```python
 response = client.funds()
 print(response)
 ```
 
-**Funds Response**
+**Resposta Funds**
 
 ```json
 {
@@ -921,7 +921,7 @@ print(response)
 
 ```
 
-### OrderBook Example
+### Exemplo OrderBook
 
 ```python
 response = client.orderbook()
@@ -972,14 +972,14 @@ print(response)
 
 ```
 
-### TradeBook Example
+### Exemplo TradeBook
 
 ```python
 response = client.tradebook()
 print(response)
 ```
 
-TradeBook Response
+Resposta TradeBook
 
 ```python
 {
@@ -1012,14 +1012,14 @@ TradeBook Response
 
 ```
 
-### PositionBook Example
+### Exemplo PositionBook
 
 ```python
 response = client.positionbook()
 print(response)
 ```
 
-**PositionBook Response**
+**Resposta PositionBook**
 
 ```json
 {
@@ -1057,14 +1057,14 @@ print(response)
 
 ```
 
-### Holdings Example
+### Exemplo Holdings
 
 ```python
 response = client.holdings()
 print(response)
 ```
 
-Holdings Response
+Resposta Holdings
 
 ```json
 {
@@ -1107,29 +1107,29 @@ Holdings Response
 
 ```
 
-### Analyzer Status Example
+### Exemplo Analyzer Status
 
 ```python
 response  = client.analyzerstatus()
 print(response)
 ```
 
-Analyzer Status Response
+Resposta Analyzer Status
 
 ```json
 {'data': {'analyze_mode': True, 'mode': 'analyze', 'total_logs': 2},
  'status': 'success'}
 ```
 
-### Analyzer Toggle Example
+### Exemplo Analyzer Toggle
 
 ```python
-# Switch to analyze mode (simulated responses)
+# Alternar para modo análise (respostas simuladas)
 response = client.analyzertoggle(mode=True)
 print(response)
 ```
 
-Analyzer Toggle Response
+Resposta Analyzer Toggle
 
 ```
 {'data': {'analyze_mode': True,
@@ -1139,35 +1139,35 @@ Analyzer Toggle Response
  'status': 'success'}
 ```
 
-### LTP Data (Streaming Websocket)
+### Dados LTP (WebSocket Streaming)
 
 ```python
 from openalgo import api
 import time
 
-# Initialize OpenAlgo client
+# Inicializar cliente OpenAlgo
 client = api(
-    api_key="your_api_key",                  # Replace with your actual OpenAlgo API key
-    host="http://127.0.0.1:5000",            # REST API host
-    ws_url="ws://127.0.0.1:8765"             # WebSocket host
+    api_key="your_api_key",                  # Substitua pela sua chave de API OpenAlgo real
+    host="http://127.0.0.1:5000",            # Host da API REST
+    ws_url="ws://127.0.0.1:8765"             # Host WebSocket
 )
 
-# Define instruments to subscribe for LTP
+# Definir instrumentos para assinar LTP
 instruments = [
     {"exchange": "NSE", "symbol": "RELIANCE"},
     {"exchange": "NSE", "symbol": "INFY"}
 ]
 
-# Callback function for LTP updates
+# Função de callback para atualizações LTP
 def on_ltp(data):
     print("LTP Update Received:")
     print(data)
 
-# Connect and subscribe
+# Conectar e assinar
 client.connect()
 client.subscribe_ltp(instruments, on_data_received=on_ltp)
 
-# Run for a few seconds to receive data
+# Executar por alguns segundos para receber dados
 try:
     time.sleep(10)
 finally:
@@ -1176,35 +1176,35 @@ finally:
 
 ```
 
-### Quotes (Streaming Websocket)
+### Quotes (WebSocket Streaming)
 
 ```python
 from openalgo import api
 import time
 
-# Initialize OpenAlgo client
+# Inicializar cliente OpenAlgo
 client = api(
-    api_key="your_api_key",                  # Replace with your actual OpenAlgo API key
-    host="http://127.0.0.1:5000",            # REST API host
-    ws_url="ws://127.0.0.1:8765"             # WebSocket host
+    api_key="your_api_key",                  # Substitua pela sua chave de API OpenAlgo real
+    host="http://127.0.0.1:5000",            # Host da API REST
+    ws_url="ws://127.0.0.1:8765"             # Host WebSocket
 )
 
-# Instruments list
+# Lista de instrumentos
 instruments = [
     {"exchange": "NSE", "symbol": "RELIANCE"},
     {"exchange": "NSE", "symbol": "INFY"}
 ]
 
-# Callback for Quote updates
+# Callback para atualizações de Quote
 def on_quote(data):
     print("Quote Update Received:")
     print(data)
 
-# Connect and subscribe to quote stream
+# Conectar e assinar to quote stream
 client.connect()
 client.subscribe_quote(instruments, on_data_received=on_quote)
 
-# Keep the script running to receive data
+# Manter o script em execução para receber dados
 try:
     time.sleep(10)
 finally:
@@ -1213,35 +1213,35 @@ finally:
 
 ```
 
-### Depth (Streaming Websocket)
+### Depth (WebSocket Streaming)
 
 ```python
 from openalgo import api
 import time
 
-# Initialize OpenAlgo client
+# Inicializar cliente OpenAlgo
 client = api(
-    api_key="your_api_key",                  # Replace with your actual OpenAlgo API key
-    host="http://127.0.0.1:5000",            # REST API host
-    ws_url="ws://127.0.0.1:8765"             # WebSocket host
+    api_key="your_api_key",                  # Substitua pela sua chave de API OpenAlgo real
+    host="http://127.0.0.1:5000",            # Host da API REST
+    ws_url="ws://127.0.0.1:8765"             # Host WebSocket
 )
 
-# Instruments list for depth
+# Lista de instrumentos for depth
 instruments = [
     {"exchange": "NSE", "symbol": "RELIANCE"},
     {"exchange": "NSE", "symbol": "INFY"}
 ]
 
-# Callback for market depth updates
+# Callback para atualizações de profundidade de mercado
 def on_depth(data):
     print("Market Depth Update Received:")
     print(data)
 
-# Connect and subscribe to depth stream
+# Conectar e assinar to depth stream
 client.connect()
 client.subscribe_depth(instruments, on_data_received=on_depth)
 
-# Run for a few seconds to collect data
+# Executar por alguns segundos para coletar dados
 try:
     time.sleep(10)
 finally:
