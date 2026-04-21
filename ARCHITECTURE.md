@@ -1,53 +1,53 @@
-# 🤖 Autonomous Trading Agent - Architecture
+# 🤖 Agente Autônomo de Trading - Arquitetura
 
-**Version**: 3.1 (Production-Ready with Startup Initialization)
-**Last Updated**: January 2025
-**Status**: Production Ready ✅
-
----
-
-## Table of Contents
-
-1. [System Overview](#system-overview)
-2. [Architecture Design](#architecture-design)
-3. [Key Features](#key-features)
-4. [Technical Stack](#technical-stack)
-5. [Startup Initialization](#startup-initialization)
-6. [Trading Tools](#trading-tools)
-7. [Data Flow](#data-flow)
-8. [Risk Management](#risk-management)
-9. [Market Hours Protection](#market-hours-protection)
-10. [Performance Optimization](#performance-optimization)
-11. [LiteLLM Integration](#litellm-integration)
-12. [Configuration](#configuration)
-13. [Deployment](#deployment)
+**Versão**: 3.1 (Pronto para Produção com Inicialização de Startup)
+**Última Atualização**: Janeiro 2025
+**Status**: Pronto para Produção ✅
 
 ---
 
-## System Overview
+## Índice
 
-The **Autonomous Trading Agent** is a highly optimized, single-agent AI trading system that makes fully autonomous trading decisions using technical analysis, parallel data processing, and instant market order execution. Built with the OpenAI Agents SDK and LiteLLM support, it provides ultra-fast, cost-effective algorithmic trading.
-
-### Design Philosophy
-
-**Version 3.0** represents a complete architecture overhaul focused on:
-
-1. **Speed**: Parallel data fetching reduces cycle time from 12-20s to 2-3s
-2. **Efficiency**: Token usage reduced by 79% (from 144K to 30K per cycle)
-3. **Simplicity**: Single autonomous agent instead of 7+ specialized agents
-4. **Cost**: 65% reduction in API costs through optimization
-5. **Reliability**: Market orders execute instantly vs 15-45s for limit orders
+1. [Visão Geral do Sistema](#visão-geral-do-sistema)
+2. [Design da Arquitetura](#design-da-arquitetura)
+3. [Funcionalidades Principais](#funcionalidades-principais)
+4. [Stack Técnico](#stack-técnico)
+5. [Inicialização de Startup](#inicialização-de-startup)
+6. [Ferramentas de Trading](#ferramentas-de-trading)
+7. [Fluxo de Dados](#fluxo-de-dados)
+8. [Gerenciamento de Riscos](#gerenciamento-de-riscos)
+9. [Proteção de Horário de Mercado](#proteção-de-horário-de-mercado)
+10. [Otimização de Desempenho](#otimização-de-desempenho)
+11. [Integração LiteLLM](#integração-litellm)
+12. [Configuração](#configuração)
+13. [Deploy](#deploy)
 
 ---
 
-## Architecture Design
+## Visão Geral do Sistema
 
-### Single-Agent Architecture
+O **Agente Autônomo de Trading** é um sistema de trading com IA altamente otimizado que toma decisões de trading totalmente autônomas usando análise técnica, processamento de dados em paralelo e execução instantânea de ordens de mercado. Construído com o OpenAI Agents SDK e suporte LiteLLM, fornece trading algorítmico ultra-rápido e econômico.
+
+### Filosofia de Design
+
+A **Versão 3.0** representa uma reformulação completa da arquitetura focada em:
+
+1. **Velocidade**: Busca de dados em paralelo reduz o tempo de ciclo de 12-20s para 2-3s
+2. **Eficiência**: Uso de tokens reduzido em 79% (de 144K para 30K por ciclo)
+3. **Simplicidade**: Único agente autônomo em vez de 7+ agentes especializados
+4. **Custo**: Redução de 65% nos custos de API através de otimização
+5. **Confiabilidade**: Ordens de mercado executam instantaneamente vs 15-45s para ordens limitadas
+
+---
+
+## Design da Arquitetura
+
+### Arquitetura de Agente Único
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   🎯 AUTONOMOUS TRADING AGENT                    │
-│                     (Single Unified Agent)                       │
+│                   🎯 AGENTE AUTÔNOMO DE TRADING                  │
+│                     (Agente Unificado Único)                     │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼

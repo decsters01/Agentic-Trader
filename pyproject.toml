@@ -1,7 +1,7 @@
 [project]
 name = "autonomous-agents"
 version = "0.1.0"
-description = "OpenAlgo Autonomous AI Trading Agent"
+description = "Agente de Trading com IA Autônoma OpenAlgo"
 requires-python = ">=3.12"
 dependencies = [
     "openai>=1.0.0",

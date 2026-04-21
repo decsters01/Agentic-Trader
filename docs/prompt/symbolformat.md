@@ -1,78 +1,78 @@
-# Symbol Format
+# Formato de Símbolo
 
-#### OpenAlgo Symbol Format Standardization
+#### Padronização do Formato de Símbolo OpenAlgo
 
-OpenAlgo standardizes financial instrument identification via a common symbol format across all exchanges and brokers, enhancing compatibility and simplifying automated trading. This uniform symbology eliminates the need for traders to adapt to varied broker-specific formats, streamlining algorithm development and execution. The format integrates key identifiers such as the base symbol, expiration date, and option type, ensuring consistent and error-free communication within trading systems. With OpenAlgo, developers can efficiently extend platform capabilities while traders focus on strategy, not syntax.
+OpenAlgo padroniza a identificação de instrumentos financeiros por meio de um formato de símbolo comum para todas as bolsas e corretores, aprimorando a compatibilidade e simplificando o trading automatizado. Esta simbologia uniforme elimina a necessidade de os traders se adaptarem a formatos variados específicos de corretores, agilizando o desenvolvimento e execução de algoritmos. O formato integra identificadores-chave como símbolo base, data de vencimento e tipo de opção, garantindo comunicação consistente e livre de erros dentro dos sistemas de trading. Com OpenAlgo, desenvolvedores podem estender eficientemente as capacidades da plataforma enquanto traders focam na estratégia, não na sintaxe.
 
 {% embed url="<https://www.youtube.com/watch?v=DcmDYpGYdJY>" %}
 
-### Equity Symbol Format
+### Formato de Símbolo para Ações (Equity)
 
-In the context of OpenAlgo, equity symbols are constructed based on the base symbol of the stock.
+No contexto do OpenAlgo, símbolos de ações são construídos com base no símbolo base da ação.
 
-**Examples:**
+**Exemplos:**
 
-1. **NSE Equity for Infosys:** Given the base symbol `INFY`, the OpenAlgo symbol for Infosys on the National Stock Exchange (NSE) would be `INFY`.
-2. **BSE Equity for Tata Motors:** With the base symbol `TATAMOTORS`, the symbol on the Bombay Stock Exchange (BSE) would be `TATAMOTORS`.
-3. **NSE Equity for State Bank of India:** If the base symbol is `SBIN`, the OpenAlgo symbol on NSE would be `SBIN`.
+1. **Ações NSE para Infosys:** Dado o símbolo base `INFY`, o símbolo OpenAlgo para Infosys na Bolsa Nacional da Índia (NSE) seria `INFY`.
+2. **Ações BSE para Tata Motors:** Com o símbolo base `TATAMOTORS`, o símbolo na Bolsa de Bombaim (BSE) seria `TATAMOTORS`.
+3. **Ações NSE para State Bank of India:** Se o símbolo base é `SBIN`, o símbolo OpenAlgo na NSE seria `SBIN`.
 
-### Future Symbol Format
+### Formato de Símbolo para Futuros
 
-For futures, the OpenAlgo symbology specifies that the symbol should consist of the base symbol followed by the expiration date and "FUT" to denote that it is a futures contract.
+Para futuros, a simbologia OpenAlgo especifica que o símbolo deve consistir no símbolo base seguido pela data de vencimento e "FUT" para denotar que é um contrato futuro.
 
-**Format:** `[Base Symbol][Expiration Date]FUT`
+**Formato:** `[Símbolo Base][Data de Vencimento]FUT`
 
-Below are the extended examples for various futures contracts:
+Abaixo estão exemplos detalhados para vários contratos futuros:
 
-**NSE Futures:**
+**Futuros NSE:**
 
-* **Example:** For Bank Nifty futures expiring in April 2024, the symbol would be `BANKNIFTY24APR24FUT`.
+* **Exemplo:** Para futuros do Bank Nifty vencendo em abril de 2024, o símbolo seria `BANKNIFTY24APR24FUT`.
 
-**BSE Futures:**
+**Futuros BSE:**
 
-* **Example:** For SENSEX futures expiring in April 2024, the symbol would be `SENSEX24APR24FUT`.
+* **Exemplo:** Para futuros do SENSEX vencendo em abril de 2024, o símbolo seria `SENSEX24APR24FUT`.
 
-**Currency Futures:**
+**Futuros de Moeda:**
 
-* **Example:** For USDINR currency futures expiring in May 2024, the symbol would be `USDINR10MAY24FUT`.
+* **Exemplo:** Para futuros de moeda USDINR vencendo em maio de 2024, o símbolo seria `USDINR10MAY24FUT`.
 
-**MCX Futures:**
+**Futuros MCX:**
 
-* **Example:** For crude oil futures on MCX expiring in May 2024, the symbol would be `CRUDEOILM20MAY24FUT`.
+* **Exemplo:** Para futuros de petróleo bruto na MCX vencendo em maio de 2024, o símbolo seria `CRUDEOILM20MAY24FUT`.
 
-**IRC Futures:**
+**Futuros IRC:**
 
-* **Example:** For government bond futures, specifically the 7.26% 2033 bond expiring in April 2024, the symbol in OpenAlgo would be `726GS203325APR24FUT`.
+* **Exemplo:** Para futuros de títulos do governo, especificamente o título 7,26% 2033 vencendo em abril de 2024, o símbolo no OpenAlgo seria `726GS203325APR24FUT`.
 
-### Options Symbol Format
+### Formato de Símbolo para Opções
 
-Options symbols in OpenAlgo are structured to include the base symbol, the expiration date, the strike price, and whether it's a Call or Put option.
+Símbolos de opções no OpenAlgo são estruturados para incluir o símbolo base, a data de vencimento, o preço de exercício (strike) e se é uma opção de Compra (Call) ou Venda (Put).
 
-**Format:** `[Base Symbol][Expiration Date][Strike Price][Option Type]`
+**Formato:** `[Símbolo Base][Data de Vencimento][Preço de Exercício][Tipo de Opção]`
 
-**Examples:**
+**Exemplos:**
 
-**NSE Index Options:**
+**Opções de Índice NSE:**
 
-* **Example:** For a Nifty call option with a strike price of 20,800, expiring on 28th March 2024, the symbol would be `NIFTY28MAR2420800CE`.
+* **Exemplo:** Para uma opção de compra (call) do Nifty com preço de exercício de 20.800, vencendo em 28 de março de 2024, o símbolo seria `NIFTY28MAR2420800CE`.
 
-**NSE Stock Options:**
+**Opções de Ações NSE:**
 
-* **Example:** For a Vedanta Limited (VEDL) call option with a strike price of 292.50, expiring on 25th April 2024, the symbol would be `VEDL25APR24292.5CE`.
+* **Exemplo:** Para uma opção de compra (call) da Vedanta Limited (VEDL) com preço de exercício de 292,50, vencendo em 25 de abril de 2024, o símbolo seria `VEDL25APR24292.5CE`.
 
-**Currency Options:**
+**Opções de Moeda:**
 
-* **Example:** For a US Dollar to Indian Rupee (USDINR) call option with a strike price of 82, expiring on 19th April 2024, the symbol would be `USDINR19APR2482CE`.
+* **Exemplo:** Para uma opção de compra (call) de Dólar Americano para Rupia Indiana (USDINR) com preço de exercício de 82, vencendo em 19 de abril de 2024, o símbolo seria `USDINR19APR2482CE`.
 
-**MCX Options:**
+**Opções MCX:**
 
-* **Example:** For a Crude Oil call option with a strike price of 6,750, expiring on 17th April 2024, the symbol would be `CRUDEOIL17APR246750CE`.
+* **Exemplo:** Para uma opção de compra (call) de Petróleo Bruto com preço de exercício de 6.750, vencendo em 17 de abril de 2024, o símbolo seria `CRUDEOIL17APR246750CE`.
 
-**IRC Options:**
+**Opções IRC:**
 
-* **Example:** For an Goverent bond (726GS2032) put option with a strike price of 97, expiring on 25th April 2024, the symbol would be `726GS203225APR2497PE`.
+* **Exemplo:** Para uma opção de venda (put) de título do governo (726GS2032) com preço de exercício de 97, vencendo em 25 de abril de 2024, o símbolo seria `726GS203225APR2497PE`.
 
-### Common NSE Index Symbols (Exchange Code : NSE\_INDEX)
+### Símbolos Comuns de Índices NSE (Código da Exchange: NSE_INDEX)
 
 NIFTY
 \
@@ -86,7 +86,7 @@ MIDCPNIFTY
 \
 INDIAVIX
 
-### Common BSE Index Symbols (Exchange Code : BSE\_INDEX)
+### Símbolos Comuns de Índices BSE (Código da Exchange: BSE_INDEX)
 
 SENSEX
 \
@@ -94,37 +94,37 @@ BANKEX
 \
 SENSEX50
 
-### Exchange  Codes
+### Códigos de Exchange
 
-The supported exchange symbol formats in OpenAlgo allow for an identification system that denotes where the instrument is traded, along with specific details that vary by instrument type:
+Os formatos de símbolo suportados no OpenAlgo permitem um sistema de identificação que denota onde o instrumento é negociado, junto com detalhes específicos que variam por tipo de instrumento:
 
-* **NSE:** `NSE` for National Stock Exchange equities.
-* **BSE:** `BSE` for Bombay Stock Exchange equities.
-* **NFO:** `NFO` for NSE Futures and Options.
-* **BFO:** `BFO` for BSE Futures and Options.
-* **BCD:** `BCD` for BSE Currency Derivatives.
-* **CDS:** `CDS` for NSE Currency Derivatives.
-* **MCX:** `MCX` for commodities traded on the Multi Commodity Exchange.
-* **NSE\_INDEX:** `NSE_INDEX` for indices on the National Stock Exchange.
-* **BSE\_INDEX:** `BSE_INDEX` for indices on the Bombay Stock Exchange.
+* **NSE:** `NSE` para ações da Bolsa Nacional da Índia (National Stock Exchange).
+* **BSE:** `BSE` para ações da Bolsa de Bombaim (Bombay Stock Exchange).
+* **NFO:** `NFO` para Futuros e Opções da NSE.
+* **BFO:** `BFO` para Futuros e Opções da BSE.
+* **BCD:** `BCD` para Derivativos de Moeda da BSE.
+* **CDS:** `CDS` para Derivativos de Moeda da NSE.
+* **MCX:** `MCX` para commodities negociadas na Multi Commodity Exchange.
+* **NSE_INDEX:** `NSE_INDEX` para índices na Bolsa Nacional da Índia.
+* **BSE_INDEX:** `BSE_INDEX` para índices na Bolsa de Bombaim.
 
-### Database Schema (Common Symbols)
+### Esquema de Banco de Dados (Símbolos Comuns)
 
-For developers, understanding the database schema is essential for managing data effectively within OpenAlgo:
+Para desenvolvedores, entender o esquema de banco de dados é essencial para gerenciar dados efetivamente dentro do OpenAlgo:
 
-1. **id:** A unique identifier for each record in the database.
-2. **symbol:** The standard trading symbol of the instrument as per OpenAlgo's symbology.
-3. **brsymbol:** The broker-specific symbol for the instrument, if applicable.
-4. **name:** The common name of the instrument (e.g., the company name for equities).
-5. **exchange:** The standard exchange identifier code (e.g NSE, BSE, MCX CDS etc) where the instrument is traded as per OpenAlgo's symbology.
-6. **brexchange:** The specific broker exchange identifier, if different from the standard exchange code.
-7. **token:** A unique token or code assigned to the instrument, possibly for internal tracking or broker-specific identification.
-8. **expiry:** The expiration date for derivatives contracts, formatted as per broker/exchange standards.
-9. **strike:** The strike price for options contracts.
-10. **lotsize:** The standardized lot size for the instrument, particularly relevant for derivatives trading.
-11. **instrumenttype:** The type of instrument (e.g., equity, future, option).
-12. **tick\_size:** The minimum price movement of the instrument on the exchange.
+1. **id:** Um identificador único para cada registro no banco de dados.
+2. **symbol:** O símbolo de trading padrão do instrumento conforme a simbologia OpenAlgo.
+3. **brsymbol:** O símbolo específico do corretor para o instrumento, se aplicável.
+4. **name:** O nome comum do instrumento (ex: nome da empresa para ações).
+5. **exchange:** O código identificador padrão da exchange (ex: NSE, BSE, MCX, CDS, etc.) onde o instrumento é negociado conforme a simbologia OpenAlgo.
+6. **brexchange:** O identificador de exchange específico do corretor, se diferente do código padrão da exchange.
+7. **token:** Um token ou código único atribuído ao instrumento, possivelmente para rastreamento interno ou identificação específica do corretor.
+8. **expiry:** A data de vencimento para contratos derivativos, formatada conforme padrões do corretor/exchange.
+9. **strike:** O preço de exercício para contratos de opções.
+10. **lotsize:** O tamanho de lote padronizado para o instrumento, particularmente relevante para trading de derivativos.
+11. **instrumenttype:** O tipo de instrumento (ex: ação, futuro, opção).
+12. **tick_size:** O mínimo movimento de preço do instrumento na exchange.
 
-<figure><img src="https://17901342-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FmBwEhITzgv0O0fEGIIRN%2Fuploads%2FvUWO49dLv5Pklo6qPtIV%2Fimage.png?alt=media&#x26;token=7cea9426-f5b9-4c29-b29f-a2e4b9ea7030" alt=""><figcaption></figcaption></figure>
+<figure><img src="https://17901342-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FmBwEhITzgv0O0fEGIIRN%2Fuploads%2FvUWO49dLv5Pklo6qPtIV%2Fimage.png?alt=media&token=7cea9426-f5b9-4c29-b29f-a2e4b9ea7030" alt=""><figcaption></figcaption></figure>
 
-This schema captures both the standardized OpenAlgo symbology and the potentially divergent broker-specific information, enabling algorithms and traders to operate across multiple platforms without confusion. It allows for the storage of instrument metadata necessary for trading activities and ensures that all financial instruments are identifiable and their market details readily accessible.
+Este esquema captura tanto a simbologia padrão OpenAlgo quanto informações potencialmente divergentes específicas do corretor, permitindo que algoritmos e traders operem em múltiplas plataformas sem confusão. Permite o armazenamento de metadados de instrumentos necessários para atividades de trading e garante que todos os instrumentos financeiros sejam identificáveis e seus detalhes de mercado estejam prontamente acessíveis.

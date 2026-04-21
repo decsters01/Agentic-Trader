@@ -1,209 +1,209 @@
-# Autonomous Trading Agent
+# Agente Autônomo de Trading
 
-> Ultra-fast, AI-powered algorithmic trading system with 70% faster execution and 79% lower costs
+> Sistema de trading algorítmico ultra-rápido impulsionado por IA com 70% mais velocidade de execução e 79% menos custos
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![OpenAI Agents SDK](https://img.shields.io/badge/OpenAI-Agents%20SDK-green.svg)](https://openai.github.io/openai-agents-python/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licença: MIT](https://img.shields.io/badge/Licença-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An autonomous AI trading agent that analyzes technical indicators in real-time, makes intelligent BUY/SELL/HOLD decisions, and executes trades automatically on the NSE (National Stock Exchange of India).
-
----
-
-## Highlights
-
-- 70% faster execution (3-6s vs 12-20s per cycle)
-- 79% lower token usage (30K vs 144K per cycle)
-- 7 technical indicators (RSI, MACD, Bollinger Bands, EMA, Stochastic, ADX, ATR)
-- Parallel data fetching (all 5 stocks simultaneously)
-- Instant market orders (no waiting for limit order fills)
-- Strict risk management (stop-loss, position limits, no pyramiding)
-- Model agnostic (works with Cerebras, Groq, OpenAI, or custom models)
-- Shorting enabled (can go long or short)
+Um agente autônomo de trading impulsionado por IA que analisa indicadores técnicos em tempo real, toma decisões inteligentes de COMPRA/VENDA/MANTER e executa ordens automaticamente na NSE (Bolsa Nacional da Índia).
 
 ---
 
-## Table of Contents
+## Destaques
 
-- [Quick Start](#quick-start)
-- [Features](#features)
-- [Performance](#performance)
-- [How It Works](#how-it-works)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Risk Management](#risk-management)
-- [Documentation](#documentation)
-- [Troubleshooting](#troubleshooting)
-- [Disclaimer](#disclaimer)
+- 70% mais velocidade de execução (3-6s vs 12-20s por ciclo)
+- 79% menos uso de tokens (30K vs 144K por ciclo)
+- 7 indicadores técnicos (RSI, MACD, Bandas de Bollinger, EMA, Estocástico, ADX, ATR)
+- Busca de dados em paralelo (todas as 5 ações simultaneamente)
+- Ordens de mercado instantâneas (sem espera para preenchimento de ordens limitadas)
+- Gerenciamento rigoroso de riscos (stop-loss, limites de posição, sem pirâmide)
+- Agnóstico quanto ao modelo (funciona com Cerebras, Groq, OpenAI ou modelos customizados)
+- Shorting habilitado (pode assumir posições longas ou short)
 
 ---
 
-## Quick Start
+## Índice
+
+- [Início Rápido](#início-rápido)
+- [Funcionalidades](#funcionalidades)
+- [Desempenho](#desempenho)
+- [Como Funciona](#como-funciona)
+- [Instalação](#instalação)
+- [Configuração](#configuração)
+- [Uso](#uso)
+- [Gerenciamento de Riscos](#gerenciamento-de-riscos)
+- [Documentação](#documentação)
+- [Solução de Problemas](#solução-de-problemas)
+- [Aviso Legal](#aviso-legal)
+
+---
+
+## Início Rápido
 
 ```bash
-# 1. Clone the repository
+# 1. Clonar o repositório
 git clone https://github.com/marketcalls/Agentic-Trader.git
 cd Agentic-Trader
 
-# 2. Install uv package manager
+# 2. Instalar o gerenciador de pacotes uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. Install dependencies
+# 3. Instalar dependências
 uv sync
 
-# 4. Configure environment
+# 4. Configurar ambiente
 cp .env.example .env
-# Edit .env with your API keys
+# Edite .env com suas chaves de API
 
-# 5. Run the agent
-uv run python agent.py
+# 5. Executar o agente
+uv run python main.py
 ```
 
-That's it! The agent will start trading automatically every 5 minutes during market hours (9:15 AM - 3:30 PM IST).
+É isso! O agente começará a operar automaticamente a cada 5 minutos durante o horário de funcionamento do mercado (9:15 AM - 3:30 PM IST).
 
 ---
 
-## Features
+## Funcionalidades
 
-### Core Capabilities
+### Capacidades Principais
 
-| Feature | Description |
+| Funcionalidade | Descrição |
 |---------|-------------|
-| **5 Stocks** | ICICIBANK, RELIANCE, SBIN, WIPRO, ITC |
-| **7 TA Indicators** | RSI, MACD, Bollinger Bands, EMA, Stochastic, ADX, ATR |
-| **Parallel Processing** | Fetches all data simultaneously in 2-3 seconds |
-| **Market Orders** | Instant execution (no waiting for fills) |
-| **Bulk Operations** | Places multiple orders in one go |
-| **Shorting** | Can sell without owning (creates short position) |
-| **Risk Controls** | Stop-loss, trade limits, position constraints |
-| **Model Agnostic** | Supports Cerebras, Groq, OpenAI, custom models |
-| **Auto-Scheduler** | Runs every 5 minutes during market hours |
-| **Cost Tracking** | Real-time token usage and cost monitoring |
+| **5 Ações** | ICICIBANK, RELIANCE, SBIN, WIPRO, ITC |
+| **7 Indicadores de AT** | RSI, MACD, Bandas de Bollinger, EMA, Estocástico, ADX, ATR |
+| **Processamento Paralelo** | Busca todos os dados simultaneamente em 2-3 segundos |
+| **Ordens de Mercado** | Execução instantânea (sem espera para preenchimento) |
+| **Operações em Lote** | Realiza múltiplas ordens de uma vez |
+| **Shorting** | Pode vender sem possuir (cria posição short) |
+| **Controles de Risco** | Stop-loss, limites de trades, restrições de posição |
+| **Agnóstico quanto ao Modelo** | Suporta Cerebras, Groq, OpenAI, modelos customizados |
+| **Auto-Agendamento** | Executa a cada 5 minutos durante horário de mercado |
+| **Monitoramento de Custos** | Monitoramento em tempo real de uso de tokens e custos |
 
-### Technical Analysis
+### Análise Técnica
 
-The agent uses **7 professional TA-Lib indicators**:
+O agente usa **7 indicadores profissionais TA-Lib**:
 
-1. **RSI** - Identifies overbought/oversold conditions
-2. **MACD** - Detects trend momentum and direction
-3. **Bollinger Bands** - Measures volatility and price extremes
-4. **EMA** - Tracks trend direction (20 & 50 period)
-5. **Stochastic** - Momentum indicator for reversals
-6. **ADX** - Measures trend strength (not direction)
-7. **ATR** - Volatility measurement for stop-loss
+1. **RSI** - Identifica condições de sobrecompra/sobrevenda
+2. **MACD** - Detecta momentum e direção da tendência
+3. **Bandas de Bollinger** - Mede volatilidade e extremos de preço
+4. **EMA** - Acompanha a direção da tendência (20 e 50 períodos)
+5. **Estocástico** - Indicador de momentum para reversões
+6. **ADX** - Mede força da tendência (não direção)
+7. **ATR** - Medida de volatilidade para stop-loss
 
-**Trading Logic**: Requires 3+ aligned indicators to trigger BUY/SELL. Weak signals = HOLD.
+**Lógica de Trading**: Requer 3+ indicadores alinhados para acionar COMPRA/VENDA. Sinais fracos = MANTER.
 
 ---
 
-## Performance
+## Desempenho
 
-### Before vs After Optimization
+### Antes vs Depois da Otimização
 
-| Metric | Before | After | Improvement |
+| Métrica | Antes | Depois | Melhoria |
 |--------|--------|-------|-------------|
-| **Cycle Time** | 12-20s | 3-6s | 70% faster |
-| **Data Fetch** | 8-12s | 2-3s | 75% faster |
-| **Token Usage** | 144K | 30K | 79% reduction |
-| **Cost per Cycle** | $0.023-0.031 | $0.008-0.012 | 65% cheaper |
-| **Order Execution** | 15-45s | Instant | 100% faster |
-| **Monthly Cost** | $74 | $26 | Save $48/month |
+| **Tempo de Ciclo** | 12-20s | 3-6s | 70% mais rápido |
+| **Busca de Dados** | 8-12s | 2-3s | 75% mais rápido |
+| **Uso de Tokens** | 144K | 30K | 79% redução |
+| **Custo por Ciclo** | $0.023-0.031 | $0.008-0.012 | 65% mais barato |
+| **Execução de Ordens** | 15-45s | Instantâneo | 100% mais rápido |
+| **Custo Mensal** | $74 | $26 | Economia de $48/mês |
 
-*Costs calculated using Cerebras llama3.1-8b model*
+*Custos calculados usando o modelo Cerebras llama3.1-8b*
 
-### Real-World Performance
+### Desempenho no Mundo Real
 
-- **Data fetching**: 2-3 seconds for all 5 stocks (parallel)
-- **Decision making**: 1-2 seconds (7 indicators analyzed)
-- **Order execution**: < 1 second (market orders)
-- **Total cycle**: 3-6 seconds end-to-end
-- **Cycles per day**: ~75 (every 5 minutes, 9:15 AM - 3:30 PM)
-
----
-
-## How It Works
-
-### Trading Cycle (Every 5 Minutes)
-
-```
-1. FETCH DATA (Parallel - 2-3s)
-   ↓
-   Fetches quotes, depth, and 7 TA indicators for all 5 stocks simultaneously
-
-2. ANALYZE (Per Stock)
-   ↓
-   • Examines RSI, MACD, Bollinger Bands, EMA, Stochastic, ADX, ATR
-   • Checks for 3+ aligned signals
-   • Makes BUY/SELL/HOLD decision
-
-3. VALIDATE (Risk Check)
-   ↓
-   • Checks daily stop-loss (-Rs.10,000)
-   • Verifies trade count limits (5 per stock)
-   • Ensures no position pyramiding
-
-4. CALCULATE (Position Size)
-   ↓
-   • Fixed Rs.10,000 investment per trade
-   • Quantity = int(10000 / LTP)
-
-5. EXECUTE (Bulk Orders - Parallel)
-   ↓
-   • Places all orders simultaneously
-   • Market orders (instant execution)
-   • Rate limiting (0.5s per 2 orders)
-```
-
-### Example Output
-
-```
-================================================================================
-Trading Cycle: 2025-01-15 10:30:00 IST
-================================================================================
-
-[BULK DATA] Fetching data for 5 symbols in parallel...
-[BULK DATA] Completed in 2.3 seconds
-
-ICICIBANK: BUY Order#123 (MACD bullish)
-RELIANCE: HOLD (weak signals)
-SBIN: HOLD (existing position)
-WIPRO: SELL Order#124 (take profit)
-ITC: HOLD (mixed signals)
-
-================================================================================
-[TOKEN USAGE] API Call Statistics:
-  Requests:      3
-  Input Tokens:  28,234
-  Output Tokens: 2,851
-  Total Tokens:  31,085
-  Est. Cost:     $0.008
-================================================================================
-```
+- **Busca de dados**: 2-3 segundos para todas as 5 ações (paralelo)
+- **Tomada de decisão**: 1-2 segundos (7 indicadores analisados)
+- **Execução de ordens**: < 1 segundo (ordens de mercado)
+- **Ciclo total**: 3-6 segundos end-to-end
+- **Ciclos por dia**: ~75 (a cada 5 minutos, 9:15 AM - 3:30 PM)
 
 ---
 
-## Installation
+## Como Funciona
 
-### Prerequisites
+### Ciclo de Trading (A Cada 5 Minutos)
 
-1. **Python 3.12+** - [Download Python](https://www.python.org/downloads/)
-2. **uv package manager** - [Install uv](https://github.com/astral-sh/uv)
-3. **TA-Lib library** - [Install TA-Lib](https://ta-lib.org/)
-4. **API Keys**:
-   - OpenAI, Cerebras, or Groq API key
-   - OpenAlgo broker account
+```
+1. BUSCAR DADOS (Paralelo - 2-3s)
+   ↓
+   Busca cotações, profundidade e 7 indicadores de AT para todas as 5 ações simultaneamente
 
-### Step-by-Step Installation
+2. ANALISAR (Por Ação)
+   ↓
+   • Examina RSI, MACD, Bandas de Bollinger, EMA, Estocástico, ADX, ATR
+   • Verifica por 3+ sinais alinhados
+   • Toma decisão de COMPRA/VENDA/MANTER
 
-#### 1. Install Python 3.12+
+3. VALIDAR (Verificação de Risco)
+   ↓
+   • Verifica stop-loss diário (-Rs.10.000)
+   • Verifica limites de trades (5 por ação)
+   • Garante sem pirâmide de posições
+
+4. CALCULAR (Tamanho da Posição)
+   ↓
+   • Investimento fixo de Rs.10.000 por trade
+   • Quantidade = int(10000 / LTP)
+
+5. EXECUTAR (Ordens em Lote - Paralelo)
+   ↓
+   • Realiza todas as ordens simultaneamente
+   • Ordens de mercado (execução instantânea)
+   • Rate limiting (0.5s a cada 2 ordens)
+```
+
+### Exemplo de Saída
+
+```
+================================================================================
+Ciclo de Trading: 2025-01-15 10:30:00 IST
+================================================================================
+
+[DADOS EM LOTE] Buscando dados para 5 símbolos em paralelo...
+[DADOS EM LOTE] Completado em 2.3 segundos
+
+ICICIBANK: COMPRAR Ordem#123 (MACD bullish)
+RELIANCE: MANTER (sinais fracos)
+SBIN: MANTER (posição existente)
+WIPRO: VENDER Ordem#124 (take profit)
+ITC: MANTER (sinais mistos)
+
+================================================================================
+[USO DE TOKENS] Estatísticas de Chamadas API:
+  Requisições:      3
+  Tokens de Entrada:  28.234
+  Tokens de Saída: 2.851
+  Total de Tokens:  31.085
+  Custo Est.:     $0.008
+================================================================================
+```
+
+---
+
+## Instalação
+
+### Pré-requisitos
+
+1. **Python 3.12+** - [Baixar Python](https://www.python.org/downloads/)
+2. **Gerenciador de pacotes uv** - [Instalar uv](https://github.com/astral-sh/uv)
+3. **Biblioteca TA-Lib** - [Instalar TA-Lib](https://ta-lib.org/)
+4. **Chaves de API**:
+   - Chave de API OpenAI, Cerebras ou Groq
+   - Conta de broker OpenAlgo
+
+### Instalação Passo a Passo
+
+#### 1. Instalar Python 3.12+
 
 ```bash
-# Check Python version
-python --version  # Should be 3.12 or higher
+# Verificar versão do Python
+python --version  # Deve ser 3.12 ou superior
 ```
 
-#### 2. Install uv package manager
+#### 2. Instalar gerenciador de pacotes uv
 
 ```bash
 # Linux/Mac
@@ -213,12 +213,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-#### 3. Install TA-Lib (Platform-Specific)
+#### 3. Instalar TA-Lib (Específico por Plataforma)
 
 **Windows:**
 ```bash
-# Download from: https://ta-lib.org/
-# Install the .exe installer
+# Baixar de: https://ta-lib.org/
+# Instalar o instalador .exe
 ```
 
 **Linux:**
@@ -232,387 +232,387 @@ sudo apt-get install ta-lib
 brew install ta-lib
 ```
 
-#### 4. Clone and Install Project
+#### 4. Clonar e Instalar Projeto
 
 ```bash
-# Clone repository
+# Clonar repositório
 git clone <repo-url>
 cd autonomous-agents
 
-# Install dependencies
+# Instalar dependências
 uv sync
 
-# Install TA-Lib Python wrapper
+# Instalar wrapper Python do TA-Lib
 uv pip install TA-Lib
 ```
 
 ---
 
-## Configuration
+## Configuração
 
-### 1. Create Environment File
+### 1. Criar Arquivo de Ambiente
 
 ```bash
 cp .env.example .env
 ```
 
-### 2. Edit .env with Your API Keys
+### 2. Editar .env com Suas Chaves de API
 
 ```bash
-# Model Provider Selection
-MODEL_PROVIDER=openai  # Options: cerebras, groq, openai, custom
+# Seleção do Provedor do Modelo
+MODEL_PROVIDER=openai  # Opções: cerebras, groq, openai, custom
 
-# OpenAI (Default - Best Quality)
+# OpenAI (Padrão - Melhor Qualidade)
 OPENAI_API_KEY=sk-your-key-here
 OPENAI_MODEL=gpt-4o-mini
 
-# Cerebras (Fastest - Recommended for Production)
+# Cerebras (Mais Rápido - Recomendado para Produção)
 CEREBRAS_API_KEY=csk-your-key-here
 CEREBRAS_MODEL=cerebras/llama3.1-8b
 
-# Groq (Fast & Cheap - Good for Development)
+# Groq (Rápido e Barato - Bom para Desenvolvimento)
 GROQ_API_KEY=gsk-your-key-here
 GROQ_MODEL=groq/llama-3.3-70b-versatile
 
-# OpenAlgo Broker Configuration
+# Configuração do Broker OpenAlgo
 OPENALGO_API_KEY=your-openalgo-api-key
 OPENALGO_HOST=http://127.0.0.1:5000
 ```
 
-### 3. Model Provider Comparison
+### 3. Comparação de Provedores de Modelo
 
 | Provider | Model | Speed | Cost/1M tokens | Best For |
 |----------|-------|-------|----------------|----------|
-| **Cerebras** | llama3.1-8b | ⚡⚡⚡ Ultra-fast | $0.60 | Production (real-time trading) |
+| **Cerebras** | llama3.1-8b | ⚡⚡⚡ Ultra-fast | $0.60 | Production (trading em tempo real) |
 | **Groq** | llama-3.3-70b | ⚡⚡ Fast | $0.59 | Development & testing |
-| **OpenAI** | gpt-4o-mini | ⚡ Standard | $0.15/$0.60 | Best reasoning quality |
+| **OpenAI** | gpt-4o-mini | ⚡ Standard | $0.15/$0.60 | Melhor qualidade de raciocínio |
 
-**Recommendation**: Use **Cerebras** for production (fastest), **Groq** for development (cheapest).
+**Recomendação**: Use **Cerebras** para produção (mais rápido), **Groq** para desenvolvimento (mais barato).
 
 ---
 
-## Usage
+## Uso
 
-### Running the Agent
+### Executando o Agente
 
-#### Development Mode (with Test Cycle)
+#### Modo Desenvolvimento (com Ciclo de Teste)
 
 ```bash
-uv run python agent.py
+uv run python main.py
 ```
 
-This will:
-- Run one immediate test cycle
-- Then schedule cycles every 5 minutes during market hours
+Isso irá:
+- Executar um ciclo de teste imediato
+- Depois agendar ciclos a cada 5 minutos durante o horário de mercado
 
-#### Production Mode (Scheduled Only)
+#### Modo Produção (Apenas Agendado)
 
-1. Edit `agent.py` and comment out the test cycle line:
+1. Edite `main.py` e comente a linha do ciclo de teste:
    ```python
-   # await run_trading_cycle()  # Comment this line
+   # await run_trading_cycle()  # Comente esta linha
    ```
 
-2. Run the agent:
+2. Execute o agente:
    ```bash
-   uv run python agent.py
+   uv run python main.py
    ```
 
-The agent will only run during scheduled market hours (9:15 AM - 3:30 PM IST, Monday-Friday).
+O agente será executado apenas durante o horário agendado de mercado (9:15 AM - 3:30 PM IST, Segunda-Sexta).
 
-### Trading Schedule
+### Agenda de Trading
 
-| Event | Time | Description |
+| Evento | Horário | Descrição |
 |-------|------|-------------|
-| **Trading Cycles** | 9:15 AM - 3:30 PM | Every 5 minutes |
-| **Square-Off** | 3:15 PM | Close all positions |
-| **Daily Reset** | 3:45 PM | Reset trade counts & P&L |
+| **Ciclos de Trading** | 9:15 AM - 3:30 PM | A cada 5 minutos |
+| **Square-Off** | 3:15 PM | Fechar todas as posições |
+| **Reset Diário** | 3:45 PM | Resetar contagem de trades e P&L |
 
-### Monitoring
+### Monitoramento
 
-The agent provides real-time output:
+O agente fornece saída em tempo real:
 
-- 🔵 **Blue** - Market data fetched
-- 🟢 **Green** - Account information
-- 🟡 **Yellow** - Risk warnings
-- 🔴 **Red** - Errors or blocked trades
-- ⚪ **White** - Trading decisions
-- 🟣 **Magenta** - Order execution
-- 🔷 **Cyan** - System information
+- 🔵 **Azul** - Dados de mercado buscados
+- 🟢 **Verde** - Informações da conta
+- 🟡 **Amarelo** - Avisos de risco
+- 🔴 **Vermelho** - Erros ou trades bloqueados
+- ⚪ **Branco** - Decisões de trading
+- 🟣 **Magenta** - Execução de ordens
+- 🔷 **Ciano** - Informações do sistema
 
 ---
 
-## Risk Management
+## Gerenciamento de Riscos
 
-### Built-in Safety Features
+### Recursos de Segurança Integrados
 
-#### 1. Daily Stop-Loss
-- **Limit**: -Rs.10,000 daily loss
-- **Action**: Stops all trading when hit
+#### 1. Stop-Loss Diário
+- **Limite**: -Rs.10.000 de perda diária
+- **Ação**: Interrompe todo trading quando atingido
 
-#### 2. Trade Count Limits
-- **Limit**: 5 trades per stock per day
-- **Prevents**: Over-trading
+#### 2. Limites de Contagem de Trades
+- **Limite**: 5 trades por ação por dia
+- **Previne**: Over-trading (excesso de operações)
 
-#### 3. Position Control
-- **No Pyramiding**: Can't add to existing long/short
-- **BUY** only if no long position
-- **SELL** only if no short position
+#### 3. Controle de Posição
+- **Sem Pirâmide**: Não pode adicionar a posições long/short existentes
+- **COMPRAR** apenas se não houver posição long
+- **VENDER** apenas se não houver posição short
 
-#### 4. Shorting Rules
-✅ **Allowed:**
-- SELL without position (creates short)
-- BUY to close short position
+#### 4. Regras de Shorting
+✅ **Permitido:**
+- VENDER sem posição (cria short)
+- COMPRAR para fechar posição short
 
-❌ **Blocked:**
-- Adding to existing long position
-- Adding to existing short position
+❌ **Bloqueado:**
+- Adicionar a posição long existente
+- Adicionar a posição short existente
 
-#### 5. Fixed Position Size
-- **Investment**: Rs.10,000 per trade
-- **Prevents**: Over-leverage
+#### 5. Tamanho Fixo de Posição
+- **Investimento**: Rs.10.000 por trade
+- **Previne**: Over-leverage (alavancagem excessiva)
 
-### Trading Parameters
+### Parâmetros de Trading
 
 ```python
 SYMBOLS = ["ICICIBANK", "RELIANCE", "SBIN", "WIPRO", "ITC"]
-MAX_INVESTMENT_PER_TRADE = 10000  # Rs.10,000 per trade
-DAILY_STOP_LOSS = -10000          # Max -Rs.10,000 loss/day
-MAX_TRADES_PER_SYMBOL = 5         # Max 5 trades per stock/day
+MAX_INVESTMENT_PER_TRADE = 10000  # Rs.10.000 por trade
+DAILY_STOP_LOSS = -10000          # Máx -Rs.10.000 perda/dia
+MAX_TRADES_PER_SYMBOL = 5         # Máx 5 trades por ação/dia
 EXCHANGE = "NSE"
-PRODUCT = "MIS"                   # Intraday trading
+PRODUCT = "MIS"                   # Trading intradiário
 ```
 
 ---
 
-## Documentation
+## Documentação
 
-### Core Documents
+### Documentos Principais
 
-- **[README.md](./README.md)** - This file (Quick start guide)
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Detailed system architecture
-- **[MODEL_CONFIG.md](./MODEL_CONFIG.md)** - Model provider configuration
-- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Common issues & solutions
+- **[README.md](./README.md)** - Este arquivo (Guia de início rápido)
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Arquitetura detalhada do sistema
+- **[MODEL_CONFIG.md](./MODEL_CONFIG.md)** - Configuração do provedor de modelo
+- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Problemas comuns e soluções
 
-### Quick Links
+### Links Rápidos
 
-| Topic | Link |
+| Tópico | Link |
 |-------|------|
-| Architecture Overview | [ARCHITECTURE.md](./ARCHITECTURE.md#architecture-design) |
-| Trading Tools | [ARCHITECTURE.md](./ARCHITECTURE.md#trading-tools) |
-| Risk Management | [ARCHITECTURE.md](./ARCHITECTURE.md#risk-management) |
-| Performance Metrics | [ARCHITECTURE.md](./ARCHITECTURE.md#performance-optimization) |
-| Model Configuration | [MODEL_CONFIG.md](./MODEL_CONFIG.md) |
-| Common Issues | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) |
+| Visão Geral da Arquitetura | [ARCHITECTURE.md](./ARCHITECTURE.md#architecture-design) |
+| Ferramentas de Trading | [ARCHITECTURE.md](./ARCHITECTURE.md#trading-tools) |
+| Gerenciamento de Riscos | [ARCHITECTURE.md](./ARCHITECTURE.md#risk-management) |
+| Métricas de Desempenho | [ARCHITECTURE.md](./ARCHITECTURE.md#performance-optimization) |
+| Configuração do Modelo | [MODEL_CONFIG.md](./MODEL_CONFIG.md) |
+| Problemas Comuns | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) |
 
 ---
 
-## Troubleshooting
+## Solução de Problemas
 
-### Common Issues
+### Problemas Comuns
 
-#### 1. Import Error: Module not found
+#### 1. Erro de Importação: Módulo não encontrado
 
 ```bash
 uv sync
 uv pip install --upgrade openai-agents
 ```
 
-#### 2. TA-Lib Import Error
+#### 2. Erro de Importação do TA-Lib
 
 ```bash
-# Install TA-Lib binary first (see Installation section)
-# Then install Python wrapper:
+# Instale o binário do TA-Lib primeiro (veja a seção Instalação)
+# Depois instale o wrapper Python:
 uv pip install TA-Lib
 ```
 
-#### 3. Rate Limit Exceeded
+#### 3. Limite de Taxa Excedido
 
-Edit `agent.py` and increase delays:
+Edite `main.py` e aumente os delays:
 ```python
-# In get_all_market_data() function:
-time.sleep(0.2)  # Increase from 0.15
+# Na função get_all_market_data():
+time.sleep(0.2)  # Aumentar de 0.15
 ```
 
-#### 4. Max Turns Exceeded
+#### 4. Máximo de Turns Excedido
 
-Edit `agent.py` and increase max_turns:
+Edite `main.py` e aumente max_turns:
 ```python
 result = Runner.run_streamed(
     trading_agent,
     query=query,
-    max_turns=60  # Increase from 30
+    max_turns=60  # Aumentar de 30
 )
 ```
 
-#### 5. Authentication Error
+#### 5. Erro de Autenticação
 
-Check your `.env` file:
-- Ensure `MODEL_PROVIDER` matches the API key you've set
-- Verify API key is valid (not expired)
-- Check API key has proper format (starts with `sk-`, `gsk-`, or `csk-`)
+Verifique seu arquivo `.env`:
+- Certifique-se de que `MODEL_PROVIDER` corresponde à chave de API definida
+- Verifique se a chave de API é válida (não expirada)
+- Verifique se a chave de API tem o formato correto (começa com `sk-`, `gsk-` ou `csk-`)
 
-For more troubleshooting help, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
+Para mais ajuda com solução de problemas, veja [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
 
 ---
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 autonomous-agents/
-├── agent.py                 # Main trading agent (run this)
-├── .env                     # Your API keys (gitignored)
-├── .env.example            # Example configuration template
-├── pyproject.toml          # Python dependencies
-├── uv.lock                 # Dependency lock file
-├── .gitignore              # Git ignore rules
-├── README.md               # This file
-├── ARCHITECTURE.md         # Detailed architecture docs
-├── MODEL_CONFIG.md         # Model provider guide
-├── TROUBLESHOOTING.md      # Common issues & fixes
-└── trading_memory.db       # Trade history database (gitignored)
+├── main.py                  # Agente de trading principal (execute este)
+├── .env                     # Suas chaves de API (gitignored)
+├── .env.example            # Modelo de configuração de exemplo
+├── pyproject.toml          # Dependências Python
+├── uv.lock                 # Arquivo lock de dependências
+├── .gitignore              # Regras de ignore do Git
+├── README.md               # Este arquivo
+├── ARCHITECTURE.md         # Documentação detalhada da arquitetura
+├── MODEL_CONFIG.md         # Guia do provedor de modelo
+├── TROUBLESHOOTING.md      # Problemas comuns e correções
+└── trading_memory.db       # Banco de dados do histórico de trades (gitignored)
 ```
 
 ---
 
-## Contributing
+## Contribuindo
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contribuições são bem-vindas! Sinta-se à vontade para enviar um Pull Request.
 
-### Development Setup
+### Configuração de Desenvolvimento
 
 ```bash
-# Clone for development
+# Clonar para desenvolvimento
 git clone <repo-url>
 cd autonomous-agents
 
-# Create virtual environment
+# Criar ambiente virtual
 uv venv
 source .venv/bin/activate  # Linux/Mac
 .venv\Scripts\activate     # Windows
 
-# Install dependencies
+# Instalar dependências
 uv sync
 
-# Run tests (if available)
+# Rodar testes (se disponível)
 uv run pytest
 ```
 
 ---
 
-## License
+## Licença
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-## Disclaimer
-
-**IMPORTANT TRADING RISK DISCLOSURE**
-
-This is an **autonomous AI trading system** that makes real trading decisions without human intervention.
-
-**Risks Include:**
-- Substantial financial loss
-- Market volatility
-- Technical failures
-- AI decision errors
-- Broker/API issues
-
-**Before Using:**
-1. ✅ Test in **paper trading mode** first
-2. ✅ Understand all risk parameters
-3. ✅ Start with small capital
-4. ✅ Monitor frequently
-5. ✅ Have stop-loss in place
-
-**Legal Notice:**
-- Use at your own risk
-- No guarantees of profit
-- Past performance ≠ future results
-- Not financial advice
-- You are responsible for all trades
-
-**The authors and contributors are not liable for any financial losses incurred.**
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
 
 ---
 
-## Resources
+## Aviso Legal
 
-### Official Documentation
+**IMPORTANTE: DIVULGAÇÃO DE RISCOS DE TRADING**
+
+Este é um **sistema autônomo de trading com IA** que toma decisões reais de trading sem intervenção humana.
+
+**Riscos Incluídos:**
+- Perda financeira substancial
+- Volatilidade do mercado
+- Falhas técnicas
+- Erros de decisão da IA
+- Problemas no broker/API
+
+**Antes de Usar:**
+1. ✅ Teste em **modo paper trading** primeiro
+2. ✅ Entenda todos os parâmetros de risco
+3. ✅ Comece com capital pequeno
+4. ✅ Monitore frequentemente
+5. ✅ Tenha stop-loss configurado
+
+**Aviso Legal:**
+- Use por sua conta e risco
+- Sem garantias de lucro
+- Desempenho passado ≠ resultados futuros
+- Não é aconselhamento financeiro
+- Você é responsável por todos os trades
+
+**Os autores e contribuidores não são responsáveis por quaisquer perdas financeiras incorridas.**
+
+---
+
+## Recursos
+
+### Documentação Oficial
 
 - **OpenAI Agents SDK**: https://openai.github.io/openai-agents-python/
 - **LiteLLM**: https://docs.litellm.ai/
 - **TA-Lib**: https://ta-lib.org/
 - **OpenAlgo**: https://openalgo.in/
 
-### Model Providers
+### Provedores de Modelo
 
 - **Cerebras**: https://cerebras.ai/
 - **Groq**: https://groq.com/
 - **OpenAI**: https://openai.com/
 
-### Support
+### Suporte
 
-- **GitHub Issues**: [Report bugs or request features]
-- **Documentation**: See `docs/` folder
-- **Email**: [Your support email]
-
----
-
-## Features Roadmap
-
-**Planned Enhancements:**
-
-- [ ] Web dashboard for monitoring
-- [ ] Backtesting engine
-- [ ] Paper trading mode
-- [ ] Multiple strategy support
-- [ ] Portfolio management
-- [ ] Email/SMS alerts
-- [ ] Performance analytics
-- [ ] Multi-exchange support
-- [ ] Options trading
-- [ ] News sentiment analysis
+- **GitHub Issues**: [Reportar bugs ou solicitar funcionalidades]
+- **Documentação**: Veja a pasta `docs/`
+- **Email**: [Seu email de suporte]
 
 ---
 
-## Stats
+## Roadmap de Funcionalidades
 
-- **Lines of Code**: ~1,000
-- **Dependencies**: 8 core packages
-- **Supported Stocks**: 5 (expandable)
-- **Technical Indicators**: 7
-- **Trading Sessions per Day**: ~75 cycles
-- **Avg. Cycle Time**: 3-6 seconds
-- **Token Usage**: ~30K per cycle
-- **Daily Cost**: ~$0.60 (Cerebras)
+**Melhorias Planejadas:**
 
----
-
-**Built with OpenAI Agents SDK**
-
-**Version**: 3.1 (Production-Ready with Full Protection)
-**Last Updated**: January 2025
-**Status**: Production Ready
+- [ ] Dashboard web para monitoramento
+- [ ] Engine de backtesting
+- [ ] Modo paper trading
+- [ ] Suporte a múltiplas estratégias
+- [ ] Gerenciamento de portfólio
+- [ ] Alertas por email/SMS
+- [ ] Análise de desempenho
+- [ ] Suporte a múltiplas exchanges
+- [ ] Trading de opções
+- [ ] Análise de sentimento de notícias
 
 ---
 
-## Quick Commands
+## Estatísticas
+
+- **Linhas de Código**: ~1.000
+- **Dependências**: 8 pacotes principais
+- **Ações Suportadas**: 5 (expansível)
+- **Indicadores Técnicos**: 7
+- **Sessões de Trading por Dia**: ~75 ciclos
+- **Tempo Médio de Ciclo**: 3-6 segundos
+- **Uso de Tokens**: ~30K por ciclo
+- **Custo Diário**: ~$0.60 (Cerebras)
+
+---
+
+**Construído com OpenAI Agents SDK**
+
+**Versão**: 3.1 (Pronto para Produção com Proteção Completa)
+**Última Atualização**: Janeiro 2025
+**Status**: Pronto para Produção
+
+---
+
+## Comandos Rápidos
 
 ```bash
-# Install and run
-uv sync && uv run python agent.py
+# Instalar e executar
+uv sync && uv run python main.py
 
-# Check logs
+# Verificar logs
 tail -f trading_agent.log
 
-# Monitor token usage
+# Monitorar uso de tokens
 grep "TOKEN USAGE" trading_agent.log
 
-# View recent trades
+# Ver trades recentes
 sqlite3 trading_memory.db "SELECT * FROM trades ORDER BY timestamp DESC LIMIT 10"
 ```
 
 ---
 
-**Happy Trading!**
+**Bom Trading!**
