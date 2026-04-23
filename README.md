@@ -2,25 +2,24 @@
 
 > **Editado, Melhorado e Adaptado por Gabriel Decsters**
 
-> Sistema de trading algorítmico ultra-rápido impulsionado por IA com 70% mais velocidade de execução e 79% menos custos
+> Sistema de trading algorítmico com decisão por **indicadores e regras** (sem LLM).
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![OpenAI Agents SDK](https://img.shields.io/badge/OpenAI-Agents%20SDK-green.svg)](https://openai.github.io/openai-agents-python/)
 [![Licença: MIT](https://img.shields.io/badge/Licença-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Um agente autônomo de trading impulsionado por IA que analisa indicadores técnicos em tempo real, toma decisões inteligentes de COMPRA/VENDA/MANTER e executa ordens automaticamente na NSE (Bolsa Nacional da Índia).
+Um agente de trading que analisa indicadores técnicos em tempo real, gera sinais COMPRA/VENDA/MANTER em `indicator_signals.py` e executa ordens via OpenAlgo na NSE (Bolsa Nacional da Índia).
 
 ---
 
 ## Destaques
 
 - 70% mais velocidade de execução (3-6s vs 12-20s por ciclo)
-- 79% menos uso de tokens (30K vs 144K por ciclo)
+- Sem custos nem latência de API de modelo de linguagem
 - 7 indicadores técnicos (RSI, MACD, Bandas de Bollinger, EMA, Estocástico, ADX, ATR)
 - Busca de dados em paralelo (todas as 5 ações simultaneamente)
 - Ordens de mercado instantâneas (sem espera para preenchimento de ordens limitadas)
 - Gerenciamento rigoroso de riscos (stop-loss, limites de posição, sem pirâmide)
-- Agnóstico quanto ao modelo (funciona com Cerebras, Groq, OpenAI ou modelos customizados)
+- Decisão por regras e indicadores (`indicator_signals.py`), sem LLM
 - Shorting habilitado (pode assumir posições longas ou short)
 
 ---
@@ -51,8 +50,8 @@ cd Agentic-Trader
 # 2. Instalar o gerenciador de pacotes uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. Instalar dependências
-uv sync
+# 3. Instalar dependências (inclui pytest com --extra dev)
+uv sync --extra dev
 
 # 4. Configurar ambiente
 cp .env.example .env
@@ -79,9 +78,9 @@ uv run python main.py
 | **Operações em Lote** | Realiza múltiplas ordens de uma vez |
 | **Shorting** | Pode vender sem possuir (cria posição short) |
 | **Controles de Risco** | Stop-loss, limites de trades, restrições de posição |
-| **Agnóstico quanto ao Modelo** | Suporta Cerebras, Groq, OpenAI, modelos customizados |
+| **Sem LLM** | Sinais em `indicator_signals.py`; limiares em `config.py` |
 | **Auto-Agendamento** | Executa a cada 5 minutos durante horário de mercado |
-| **Monitoramento de Custos** | Monitoramento em tempo real de uso de tokens e custos |
+| **Risco** | Limites diários e por símbolo no motor de trading |
 
 ### Análise Técnica
 
@@ -193,8 +192,7 @@ ITC: MANTER (sinais mistos)
 2. **Gerenciador de pacotes uv** - [Instalar uv](https://github.com/astral-sh/uv)
 3. **Biblioteca TA-Lib** - [Instalar TA-Lib](https://ta-lib.org/)
 4. **Chaves de API**:
-   - Chave de API OpenAI, Cerebras ou Groq
-   - Conta de broker OpenAlgo
+   - Conta e API **OpenAlgo** (único serviço externo obrigatório para ordens e dados)
 
 ### Instalação Passo a Passo
 
@@ -258,38 +256,17 @@ uv pip install TA-Lib
 cp .env.example .env
 ```
 
-### 2. Editar .env com Suas Chaves de API
+### 2. Editar `.env`
+
+Define apenas as variáveis **OpenAlgo** (e opcionalmente limiares de decisão). Não são necessárias chaves de LLM.
 
 ```bash
-# Seleção do Provedor do Modelo
-MODEL_PROVIDER=openai  # Opções: cerebras, groq, openai, custom
-
-# OpenAI (Padrão - Melhor Qualidade)
-OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-4o-mini
-
-# Cerebras (Mais Rápido - Recomendado para Produção)
-CEREBRAS_API_KEY=csk-your-key-here
-CEREBRAS_MODEL=cerebras/llama3.1-8b
-
-# Groq (Rápido e Barato - Bom para Desenvolvimento)
-GROQ_API_KEY=gsk-your-key-here
-GROQ_MODEL=groq/llama-3.3-70b-versatile
-
-# Configuração do Broker OpenAlgo
 OPENALGO_API_KEY=your-openalgo-api-key
 OPENALGO_HOST=http://127.0.0.1:5000
+# Opcional: SENTIMENT_THRESHOLD_BUY, SENTIMENT_THRESHOLD_SELL
 ```
 
-### 3. Comparação de Provedores de Modelo
-
-| Provider | Model | Speed | Cost/1M tokens | Best For |
-|----------|-------|-------|----------------|----------|
-| **Cerebras** | llama3.1-8b | ⚡⚡⚡ Ultra-fast | $0.60 | Production (trading em tempo real) |
-| **Groq** | llama-3.3-70b | ⚡⚡ Fast | $0.59 | Development & testing |
-| **OpenAI** | gpt-4o-mini | ⚡ Standard | $0.15/$0.60 | Melhor qualidade de raciocínio |
-
-**Recomendação**: Use **Cerebras** para produção (mais rápido), **Groq** para desenvolvimento (mais barato).
+Detalhes em [MODEL_CONFIG.md](./MODEL_CONFIG.md).
 
 ---
 
@@ -403,7 +380,7 @@ PRODUCT = "MIS"                   # Trading intradiário
 | Ferramentas de Trading | [ARCHITECTURE.md](./ARCHITECTURE.md#trading-tools) |
 | Gerenciamento de Riscos | [ARCHITECTURE.md](./ARCHITECTURE.md#risk-management) |
 | Métricas de Desempenho | [ARCHITECTURE.md](./ARCHITECTURE.md#performance-optimization) |
-| Configuração do Modelo | [MODEL_CONFIG.md](./MODEL_CONFIG.md) |
+| Decisão por indicadores | [MODEL_CONFIG.md](./MODEL_CONFIG.md) |
 | Problemas Comuns | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) |
 
 ---
@@ -415,8 +392,7 @@ PRODUCT = "MIS"                   # Trading intradiário
 #### 1. Erro de Importação: Módulo não encontrado
 
 ```bash
-uv sync
-uv pip install --upgrade openai-agents
+uv sync --extra dev
 ```
 
 #### 2. Erro de Importação do TA-Lib
@@ -435,23 +411,11 @@ Edite `main.py` e aumente os delays:
 time.sleep(0.2)  # Aumentar de 0.15
 ```
 
-#### 4. Máximo de Turns Excedido
+#### 4. Erro de Autenticação OpenAlgo
 
-Edite `main.py` e aumente max_turns:
-```python
-result = Runner.run_streamed(
-    trading_agent,
-    query=query,
-    max_turns=60  # Aumentar de 30
-)
-```
-
-#### 5. Erro de Autenticação
-
-Verifique seu arquivo `.env`:
-- Certifique-se de que `MODEL_PROVIDER` corresponde à chave de API definida
-- Verifique se a chave de API é válida (não expirada)
-- Verifique se a chave de API tem o formato correto (começa com `sk-`, `gsk-` ou `csk-`)
+Verifique o `.env`:
+- `OPENALGO_API_KEY` e `OPENALGO_HOST` corretos
+- Serviço OpenAlgo acessível no host configurado
 
 Para mais ajuda com solução de problemas, veja [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
 
@@ -462,6 +426,7 @@ Para mais ajuda com solução de problemas, veja [TROUBLESHOOTING.md](./TROUBLES
 ```
 autonomous-agents/
 ├── main.py                  # Agente de trading principal (execute este)
+├── indicator_signals.py     # Score e BUY/SELL/HOLD a partir de indicadores
 ├── .env                     # Suas chaves de API (gitignored)
 ├── .env.example            # Modelo de configuração de exemplo
 ├── pyproject.toml          # Dependências Python
@@ -469,7 +434,7 @@ autonomous-agents/
 ├── .gitignore              # Regras de ignore do Git
 ├── README.md               # Este arquivo
 ├── ARCHITECTURE.md         # Documentação detalhada da arquitetura
-├── MODEL_CONFIG.md         # Guia do provedor de modelo
+├── MODEL_CONFIG.md         # Sinais por indicadores (sem LLM)
 ├── TROUBLESHOOTING.md      # Problemas comuns e correções
 └── trading_memory.db       # Banco de dados do histórico de trades (gitignored)
 ```
@@ -542,16 +507,8 @@ Este é um **sistema autônomo de trading com IA** que toma decisões reais de t
 
 ### Documentação Oficial
 
-- **OpenAI Agents SDK**: https://openai.github.io/openai-agents-python/
-- **LiteLLM**: https://docs.litellm.ai/
 - **TA-Lib**: https://ta-lib.org/
 - **OpenAlgo**: https://openalgo.in/
-
-### Provedores de Modelo
-
-- **Cerebras**: https://cerebras.ai/
-- **Groq**: https://groq.com/
-- **OpenAI**: https://openai.com/
 
 ### Suporte
 
@@ -581,21 +538,15 @@ Este é um **sistema autônomo de trading com IA** que toma decisões reais de t
 ## Estatísticas
 
 - **Linhas de Código**: ~1.000
-- **Dependências**: 8 pacotes principais
+- **Dependências**: ver `pyproject.toml` / `uv.lock`
 - **Ações Suportadas**: 5 (expansível)
 - **Indicadores Técnicos**: 7
 - **Sessões de Trading por Dia**: ~75 ciclos
 - **Tempo Médio de Ciclo**: 3-6 segundos
-- **Uso de Tokens**: ~30K por ciclo
-- **Custo Diário**: ~$0.60 (Cerebras)
-
 ---
 
-**Construído com OpenAI Agents SDK**
-
-**Versão**: 3.1 (Pronto para Produção com Proteção Completa)
-**Última Atualização**: Janeiro 2025
-**Status**: Pronto para Produção
+**Versão**: modo só indicadores (sem LLM)
+**Status**: em desenvolvimento; testar em paper antes de capital real
 
 ---
 
@@ -607,9 +558,6 @@ uv sync && uv run python main.py
 
 # Verificar logs
 tail -f trading_agent.log
-
-# Monitorar uso de tokens
-grep "TOKEN USAGE" trading_agent.log
 
 # Ver trades recentes
 sqlite3 trading_memory.db "SELECT * FROM trades ORDER BY timestamp DESC LIMIT 10"

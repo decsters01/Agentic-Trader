@@ -1,6 +1,6 @@
 """
-Módulo do Agente de IA para o Agente de Trading.
-Responsável por analisar dados de mercado, aprender com trades passados e tomar decisões.
+Módulo de decisão por regras para o agente de trading.
+Combina sinais por indicadores, histórico de trades e gates de risco (sem LLM).
 """
 from typing import Dict, Any, List
 from colorama import Fore, Style

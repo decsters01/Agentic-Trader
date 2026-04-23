@@ -1,6 +1,6 @@
 """
 Ponto de entrada e orquestração do Agente de Trading Autônomo OpenAlgo.
-Coordena todos os módulos: dados de mercado, motor de trading, agente de IA e gerenciamento de estado.
+Coordena dados de mercado, motor de trading, regras por indicadores e gerenciamento de estado (sem LLM).
 """
 import sys
 import io
@@ -13,18 +13,32 @@ from typing import Dict, Any, List
 from colorama import Fore, Style, init
 from dotenv import load_dotenv
 
+
+def _configure_windows_console_utf8() -> None:
+    """Evita UnicodeEncodeError (cp1252) ao imprimir caracteres Unicode no Windows."""
+    if sys.platform != "win32":
+        return
+    for stream in (sys.stdout, sys.stderr):
+        if isinstance(stream, io.TextIOBase) and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError):
+                pass
+
+
 # Importar módulos modularizados
 from config import (
-    MODEL_PROVIDER, SYMBOLS, EXCHANGE, PRODUCT, MAX_INVESTMENT_PER_TRADE,
+    SYMBOLS, EXCHANGE, PRODUCT, MAX_INVESTMENT_PER_TRADE,
     DAILY_STOP_LOSS, MAX_TRADES_PER_SYMBOL, IST, MARKET_OPEN_HOUR, MARKET_OPEN_MINUTE,
     SQUARE_OFF_HOUR, SQUARE_OFF_MINUTE, DAILY_RESET_HOUR, DAILY_RESET_MINUTE,
-    setup_model, setup_openalgo_client
+    setup_openalgo_client,
 )
 from utils import setup_logging, get_current_time_in_timezone, print_colored_message
 from market_data import MarketDataClient
 from trading_engine import TradingEngine
 from ai_agent import AIAgent
 
+_configure_windows_console_utf8()
 # Inicializar colorama para compatibilidade Windows
 init(autoreset=True)
 
@@ -41,17 +55,14 @@ load_dotenv(override=True)
 def initialize_system():
     """
     Inicializa todos os componentes do sistema de trading.
-    
+
     Returns:
-        Tupla contendo (modelo, cliente_openalgo, market_client, trading_engine, ai_agent, trade_state).
+        Tupla (cliente_openalgo, market_client, trading_engine, ai_agent, trade_state).
     """
     print(f"\n{Fore.CYAN}{'='*80}{Style.RESET_ALL}")
     print(f"{Fore.CYAN}[INICIALIZAÇÃO] Agente de Trading Autônomo OpenAlgo{Style.RESET_ALL}")
     print(f"{Fore.CYAN}{'='*80}{Style.RESET_ALL}\n")
-    
-    # Configurar modelo de IA
-    trading_model, model_name = setup_model()
-    
+
     # Configurar cliente OpenAlgo
     client = setup_openalgo_client()
     print(f"{Fore.GREEN}[CLIENTE] OpenAlgo conectado em {os.getenv('OPENALGO_HOST', 'http://127.0.0.1:5000')}{Style.RESET_ALL}\n")
@@ -69,11 +80,11 @@ def initialize_system():
     # Inicializar clientes
     market_client = MarketDataClient(client)
     trading_engine = TradingEngine(client, trade_state)
-    ai_agent = AIAgent(trading_model)
+    ai_agent = AIAgent()
     
     print(f"{Fore.GREEN}[SISTEMA] Todos os componentes inicializados com sucesso{Style.RESET_ALL}\n")
-    
-    return trading_model, client, market_client, trading_engine, ai_agent, trade_state
+
+    return client, market_client, trading_engine, ai_agent, trade_state
 
 # ============================================================================
 # FUNÇÕES DE ORQUESTRAÇÃO DO CICLO DE TRADING
@@ -86,7 +97,7 @@ async def run_trading_cycle(market_client, trading_engine, ai_agent, trade_state
     Args:
         market_client: Cliente de dados de mercado.
         trading_engine: Motor de execução de ordens.
-        ai_agent: Agente de IA para análise.
+        ai_agent: Agente de regras (indicadores + histórico).
         trade_state: Estado atual dos trades.
     """
     try:
@@ -112,24 +123,9 @@ async def run_trading_cycle(market_client, trading_engine, ai_agent, trade_state
                 continue
             
             print(f"\n{Fore.YELLOW}[ANÁLISE] Processando {symbol}...{Style.RESET_ALL}")
-            
-            # Preparar resumo para IA
-            market_summary = f"""
-            Símbolo: {symbol}
-            Preço Atual (LTP): {symbol_data.get('ltp', 0)}
-            Volume: {symbol_data.get('volume', 0):,}
-            Razão Bid/Ask: {symbol_data.get('bid_ask_ratio', 0)}
-            RSI: {symbol_data.get('rsi', 50)}
-            Tendência MACD: {symbol_data.get('macd_trend', 'neutral')}
-            Tendência EMA: {symbol_data.get('ema_trend', 'neutral')}
-            
-            Estado da Conta:
-            - P&L Diário: R${trade_state['daily_pnl']:.2f}
-            - Trades hoje para {symbol}: {trade_state['trade_counts'].get(symbol, 0)}
-            """
-            
-            # 3. Análise da IA
-            sentiment_score, recommendation = ai_agent.analyze_market_sentiment(market_summary)
+
+            # 3. Sinais a partir de indicadores (sem LLM)
+            sentiment_score, recommendation = ai_agent.analyze_market_sentiment(symbol_data)
             
             # 4. Analisar performance passada
             past_performance = ai_agent.analyze_past_trades(symbol, trade_state.get("trade_history", []))
@@ -237,7 +233,7 @@ def schedule_jobs(scheduler, market_client, trading_engine, ai_agent, trade_stat
         scheduler: Agendador APScheduler.
         market_client: Cliente de dados de mercado.
         trading_engine: Motor de execução de ordens.
-        ai_agent: Agente de IA.
+        ai_agent: Agente de regras.
         trade_state: Estado dos trades.
     """
     # Job para rodar ciclo de trading a cada 5 minutos durante horário de mercado
@@ -277,7 +273,7 @@ def schedule_jobs(scheduler, market_client, trading_engine, ai_agent, trade_stat
 async def main_async():
     """Função assíncrona principal."""
     # Inicializar sistema
-    trading_model, client, market_client, trading_engine, ai_agent, trade_state = initialize_system()
+    client, market_client, trading_engine, ai_agent, trade_state = initialize_system()
     
     # Criar scheduler assíncrono
     scheduler = AsyncIOScheduler(timezone=IST)
