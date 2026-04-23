@@ -2,10 +2,12 @@
 Módulo de decisão por regras para o agente de trading.
 Combina sinais por indicadores, histórico de trades e gates de risco (sem LLM).
 """
-from typing import Dict, Any, List
+from typing import Any, Dict, List, Tuple
+
 from colorama import Fore, Style
 
 from config import SENTIMENT_THRESHOLD_BUY, SENTIMENT_THRESHOLD_SELL
+from indicator_signals import signal_from_indicators
 
 
 class AIAgent:
@@ -14,8 +16,7 @@ class AIAgent:
     def __init__(self):
         pass
 
-    def analyze_market_sentiment(self, symbol_data: dict) -> tuple:
-        from indicator_signals import signal_from_indicators
+    def analyze_market_sentiment(self, symbol_data: dict) -> Tuple[float, str]:
         score, recommendation = signal_from_indicators(symbol_data)
         print(f"{Fore.CYAN}[SINAL] score={score:.2f}, recomendação={recommendation}{Style.RESET_ALL}", flush=True)
         return score, recommendation
@@ -127,8 +128,8 @@ class AIAgent:
         Tomar decisão final de ação baseada em múltiplos fatores.
 
         Args:
-            sentiment_score: Score de sentimento da IA (0-1).
-            recommendation: Recomendação inicial da IA ("BUY", "SELL", "HOLD").
+            sentiment_score: Score derivado dos indicadores (0-1).
+            recommendation: Recomendação inicial ("BUY", "SELL", "HOLD").
             risk_analysis: Resultado da análise de restrições de risco.
             past_performance: Análise de performance passada para o símbolo.
 
@@ -157,12 +158,14 @@ class AIAgent:
 
         elif recommendation == "SELL":
             if sentiment_score <= SENTIMENT_THRESHOLD_SELL:
-                print(f"{Fore.GREEN}[DECISÃO] SELL confirmado (sentimento={sentiment_score:.2f}, confiança={confidence}){Style.RESET_ALL}", flush=True)
-                return "SELL"
-            else:
-                print(f"{Fore.YELLOW}[DECISÃO] HOLD (sentimento acima do limiar de venda){Style.RESET_ALL}", flush=True)
+                if confidence in ["high", "medium"]:
+                    print(f"{Fore.GREEN}[DECISÃO] SELL confirmado (sentimento={sentiment_score:.2f}, confiança={confidence}){Style.RESET_ALL}", flush=True)
+                    return "SELL"
+                print(f"{Fore.YELLOW}[DECISÃO] SELL cauteloso (confiança baixa){Style.RESET_ALL}", flush=True)
                 return "HOLD"
+            print(f"{Fore.YELLOW}[DECISÃO] HOLD (sentimento acima do limiar de venda){Style.RESET_ALL}", flush=True)
+            return "HOLD"
 
         else:
-            print(f"{Fore.CYAN}[DECISÃO] HOLD (recomendação neutra da IA){Style.RESET_ALL}", flush=True)
+            print(f"{Fore.CYAN}[DECISÃO] HOLD (recomendação neutra){Style.RESET_ALL}", flush=True)
             return "HOLD"

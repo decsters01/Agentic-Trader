@@ -1,6 +1,6 @@
 """
 Configurações centrais do Agente de Trading Autônomo OpenAlgo.
-Contém chaves de API, parâmetros de trading e limiares de decisão (regras por indicadores).
+Lê parâmetros do ambiente (`.env`) e expõe limiares de trading e de decisão por indicadores.
 """
 import os
 from dotenv import load_dotenv
@@ -13,7 +13,6 @@ load_dotenv(override=True)
 # ============================================================================
 DEFAULT_SENTIMENT_THRESHOLD_BUY = 0.6
 DEFAULT_SENTIMENT_THRESHOLD_SELL = 0.4
-DEFAULT_VOLATILITY_THRESHOLD = 0.02
 
 # Configurar cliente OpenAlgo
 def setup_openalgo_client():
@@ -50,7 +49,6 @@ TAKE_PROFIT_PERCENTAGE = float(os.getenv("TAKE_PROFIT_PERCENTAGE", str(DEFAULT_T
 # ============================================================================
 SENTIMENT_THRESHOLD_BUY = float(os.getenv("SENTIMENT_THRESHOLD_BUY", str(DEFAULT_SENTIMENT_THRESHOLD_BUY)))
 SENTIMENT_THRESHOLD_SELL = float(os.getenv("SENTIMENT_THRESHOLD_SELL", str(DEFAULT_SENTIMENT_THRESHOLD_SELL)))
-VOLATILITY_THRESHOLD = float(os.getenv("VOLATILITY_THRESHOLD", str(DEFAULT_VOLATILITY_THRESHOLD)))
 
 # ============================================================================
 # CONFIGURAÇÕES DE AGENDAMENTO E FUSO HORÁRIO

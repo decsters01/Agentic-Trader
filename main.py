@@ -6,10 +6,9 @@ import sys
 import io
 import os
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import pytz
-from typing import Dict, Any, List
 from colorama import Fore, Style, init
 from dotenv import load_dotenv
 
@@ -28,12 +27,17 @@ def _configure_windows_console_utf8() -> None:
 
 # Importar módulos modularizados
 from config import (
-    SYMBOLS, EXCHANGE, PRODUCT, MAX_INVESTMENT_PER_TRADE,
-    DAILY_STOP_LOSS, MAX_TRADES_PER_SYMBOL, IST, MARKET_OPEN_HOUR, MARKET_OPEN_MINUTE,
-    SQUARE_OFF_HOUR, SQUARE_OFF_MINUTE, DAILY_RESET_HOUR, DAILY_RESET_MINUTE,
+    SYMBOLS,
+    IST,
+    MARKET_OPEN_HOUR,
+    MARKET_OPEN_MINUTE,
+    SQUARE_OFF_HOUR,
+    SQUARE_OFF_MINUTE,
+    DAILY_RESET_HOUR,
+    DAILY_RESET_MINUTE,
     setup_openalgo_client,
 )
-from utils import setup_logging, get_current_time_in_timezone, print_colored_message
+from utils import setup_logging, get_current_time_in_timezone
 from market_data import MarketDataClient
 from trading_engine import TradingEngine
 from ai_agent import AIAgent
@@ -236,16 +240,23 @@ def schedule_jobs(scheduler, market_client, trading_engine, ai_agent, trade_stat
         ai_agent: Agente de regras.
         trade_state: Estado dos trades.
     """
-    # Job para rodar ciclo de trading a cada 5 minutos durante horário de mercado
+    # Ciclo a cada 5 min entre abertura (MARKET_OPEN_*) e square-off (SQUARE_OFF_*), fuso IST
+    _now = datetime.now(IST)
+    session_start = _now.replace(
+        hour=MARKET_OPEN_HOUR, minute=MARKET_OPEN_MINUTE, second=0, microsecond=0
+    )
+    session_end = _now.replace(
+        hour=SQUARE_OFF_HOUR, minute=SQUARE_OFF_MINUTE, second=0, microsecond=0
+    )
     scheduler.add_job(
         run_trading_cycle,
         trigger='cron',
-        hour=9,
+        hour=f'{MARKET_OPEN_HOUR}-{SQUARE_OFF_HOUR}',
         minute='*/5',
-        start_date=datetime.now(IST).replace(hour=9, minute=15),
-        end_date=datetime.now(IST).replace(hour=15, minute=15),
+        start_date=session_start,
+        end_date=session_end,
         args=[market_client, trading_engine, ai_agent, trade_state],
-        name='Ciclo de Trading'
+        name='Ciclo de Trading',
     )
     
     # Job para square-off às 15:15

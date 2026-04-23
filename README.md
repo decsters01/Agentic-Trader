@@ -94,93 +94,28 @@ O agente usa **7 indicadores profissionais TA-Lib**:
 6. **ADX** - Mede força da tendência (não direção)
 7. **ATR** - Medida de volatilidade para stop-loss
 
-**Lógica de Trading**: Requer 3+ indicadores alinhados para acionar COMPRA/VENDA. Sinais fracos = MANTER.
+**Lógica de trading (atual)**: `indicator_signals.py` combina RSI, tendências MACD/EMA e razão bid/ask num score 0–1; `ai_agent.decide_action` aplica limiares (`SENTIMENT_THRESHOLD_*`) e confiança a partir do histórico; o motor aplica risco e tamanho de posição.
 
 ---
 
 ## Desempenho
 
-### Antes vs Depois da Otimização
-
-| Métrica | Antes | Depois | Melhoria |
-|--------|--------|-------|-------------|
-| **Tempo de Ciclo** | 12-20s | 3-6s | 70% mais rápido |
-| **Busca de Dados** | 8-12s | 2-3s | 75% mais rápido |
-| **Uso de Tokens** | 144K | 30K | 79% redução |
-| **Custo por Ciclo** | $0.023-0.031 | $0.008-0.012 | 65% mais barato |
-| **Execução de Ordens** | 15-45s | Instantâneo | 100% mais rápido |
-| **Custo Mensal** | $74 | $26 | Economia de $48/mês |
-
-*Custos calculados usando o modelo Cerebras llama3.1-8b*
-
-### Desempenho no Mundo Real
-
-- **Busca de dados**: 2-3 segundos para todas as 5 ações (paralelo)
-- **Tomada de decisão**: 1-2 segundos (7 indicadores analisados)
-- **Execução de ordens**: < 1 segundo (ordens de mercado)
-- **Ciclo total**: 3-6 segundos end-to-end
-- **Ciclos por dia**: ~75 (a cada 5 minutos, 9:15 AM - 3:30 PM)
+- **Busca de dados**: em paralelo por símbolo (depende da API OpenAlgo e da rede).
+- **Decisão**: regras locais, sem chamadas a modelo de linguagem.
+- **Ciclos agendados**: a cada 5 minutos entre `MARKET_OPEN_*` e `SQUARE_OFF_*` (IST), configuráveis no `.env` / `config.py`.
 
 ---
 
 ## Como Funciona
 
-### Ciclo de Trading (A Cada 5 Minutos)
+### Ciclo de trading (agendado)
 
-```
-1. BUSCAR DADOS (Paralelo - 2-3s)
-   ↓
-   Busca cotações, profundidade e 7 indicadores de AT para todas as 5 ações simultaneamente
-
-2. ANALISAR (Por Ação)
-   ↓
-   • Examina RSI, MACD, Bandas de Bollinger, EMA, Estocástico, ADX, ATR
-   • Verifica por 3+ sinais alinhados
-   • Toma decisão de COMPRA/VENDA/MANTER
-
-3. VALIDAR (Verificação de Risco)
-   ↓
-   • Verifica stop-loss diário (-Rs.10.000)
-   • Verifica limites de trades (5 por ação)
-   • Garante sem pirâmide de posições
-
-4. CALCULAR (Tamanho da Posição)
-   ↓
-   • Investimento fixo de Rs.10.000 por trade
-   • Quantidade = int(10000 / LTP)
-
-5. EXECUTAR (Ordens em Lote - Paralelo)
-   ↓
-   • Realiza todas as ordens simultaneamente
-   • Ordens de mercado (execução instantânea)
-   • Rate limiting (0.5s a cada 2 ordens)
-```
-
-### Exemplo de Saída
-
-```
-================================================================================
-Ciclo de Trading: 2025-01-15 10:30:00 IST
-================================================================================
-
-[DADOS EM LOTE] Buscando dados para 5 símbolos em paralelo...
-[DADOS EM LOTE] Completado em 2.3 segundos
-
-ICICIBANK: COMPRAR Ordem#123 (MACD bullish)
-RELIANCE: MANTER (sinais fracos)
-SBIN: MANTER (posição existente)
-WIPRO: VENDER Ordem#124 (take profit)
-ITC: MANTER (sinais mistos)
-
-================================================================================
-[USO DE TOKENS] Estatísticas de Chamadas API:
-  Requisições:      3
-  Tokens de Entrada:  28.234
-  Tokens de Saída: 2.851
-  Total de Tokens:  31.085
-  Custo Est.:     $0.008
-================================================================================
-```
+1. **Dados** — cotações, profundidade e histórico por símbolo (`market_data.py` + indicadores em `utils.py`).
+2. **Sinal** — score e BUY/SELL/HOLD (`indicator_signals.py`).
+3. **Contexto** — histórico de trades do símbolo (`analyze_past_trades`).
+4. **Risco** — `TradingEngine.check_risk_constraints`.
+5. **Decisão final** — `decide_action` (limiares + confiança).
+6. **Execução** — cálculo de quantidade e ordem via OpenAlgo.
 
 ---
 
