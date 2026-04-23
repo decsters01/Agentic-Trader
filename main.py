@@ -112,7 +112,7 @@ async def run_trading_cycle(market_client, trading_engine, ai_agent, trade_state
         
         # 1. Buscar todos os dados de mercado em paralelo
         print(f"{Fore.BLUE}[ETAPA 1] Buscando dados de mercado...{Style.RESET_ALL}")
-        all_market_data = market_client.get_all_market_data()
+        all_market_data = await market_client.get_all_market_data_async()
         
         if all_market_data.get("status") != "success":
             print(f"{Fore.RED}[ERRO] Falha ao buscar dados de mercado{Style.RESET_ALL}")

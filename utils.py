@@ -5,11 +5,15 @@ Formatação de dados, cálculos técnicos, manipulação de tempo e logs.
 import logging
 from functools import lru_cache
 import numpy as np
-import talib
 import pytz
 from datetime import datetime
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple, Union
 from colorama import Fore, Style
+
+try:
+    import talib  # type: ignore
+except ModuleNotFoundError:  # pragma: no cover
+    talib = None
 
 # Configurar logger
 def setup_logging():
@@ -47,20 +51,56 @@ def _calculate_indicators_cached(close_tuple: tuple, high_tuple: tuple, low_tupl
     high_prices = np.array(high_tuple)
     low_prices = np.array(low_tuple)
 
-    # Calcular RSI (14 períodos)
-    rsi = talib.RSI(close_prices, timeperiod=14)
-    
-    # Calcular MACD
-    macd, macd_signal, _ = talib.MACD(
-        close_prices, 
-        fastperiod=12, 
-        slowperiod=26, 
-        signalperiod=9
-    )
-    
-    # Calcular EMAs (20 e 50 períodos)
-    ema_20 = talib.EMA(close_prices, timeperiod=20)
-    ema_50 = talib.EMA(close_prices, timeperiod=50)
+    if talib is not None:
+        # Calcular RSI (14 períodos)
+        rsi = talib.RSI(close_prices, timeperiod=14)
+
+        # Calcular MACD
+        macd, macd_signal, _ = talib.MACD(
+            close_prices,
+            fastperiod=12,
+            slowperiod=26,
+            signalperiod=9,
+        )
+
+        # Calcular EMAs (20 e 50 períodos)
+        ema_20 = talib.EMA(close_prices, timeperiod=20)
+        ema_50 = talib.EMA(close_prices, timeperiod=50)
+    else:
+        # Fallback puro em numpy quando TA-Lib não está disponível (Windows sem wheel, etc.)
+        def _ema(arr: np.ndarray, period: int) -> np.ndarray:
+            if arr.size == 0:
+                return np.array([], dtype=float)
+            alpha = 2.0 / (period + 1.0)
+            out = np.empty(arr.shape[0], dtype=float)
+            out[0] = float(arr[0])
+            for i in range(1, arr.shape[0]):
+                out[i] = alpha * float(arr[i]) + (1.0 - alpha) * out[i - 1]
+            return out
+
+        def _rsi(arr: np.ndarray, period: int = 14) -> np.ndarray:
+            if arr.size == 0:
+                return np.array([], dtype=float)
+            delta = np.diff(arr, prepend=arr[0]).astype(float)
+            gain = np.where(delta > 0, delta, 0.0)
+            loss = np.where(delta < 0, -delta, 0.0)
+            avg_gain = _ema(gain, period)
+            avg_loss = _ema(loss, period)
+            rs = np.divide(avg_gain, avg_loss, out=np.zeros_like(avg_gain), where=avg_loss != 0)
+            return 100.0 - (100.0 / (1.0 + rs))
+
+        def _macd(arr: np.ndarray, fast: int = 12, slow: int = 26, signal: int = 9) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+            ema_fast = _ema(arr, fast)
+            ema_slow = _ema(arr, slow)
+            macd_line = ema_fast - ema_slow
+            signal_line = _ema(macd_line, signal)
+            hist = macd_line - signal_line
+            return macd_line, signal_line, hist
+
+        rsi = _rsi(close_prices, period=14)
+        macd, macd_signal, _ = _macd(close_prices, fast=12, slow=26, signal=9)
+        ema_20 = _ema(close_prices, period=20)
+        ema_50 = _ema(close_prices, period=50)
 
     # Extrair valores atuais (últimos válidos)
     rsi_current = round(float(rsi[~np.isnan(rsi)][-1]), 2) if len(rsi[~np.isnan(rsi)]) > 0 else 50.0
@@ -137,17 +177,17 @@ def calculate_bid_ask_ratio(depth_data: Dict[str, Any]) -> float:
 # MANIPULAÇÃO DE TEMPO E FUSO HORÁRIO
 # ============================================================================
 
-def get_current_time_in_timezone(timezone_str: str = 'Asia/Kolkata') -> datetime:
+def get_current_time_in_timezone(timezone: Union[str, pytz.BaseTzInfo] = "Asia/Kolkata") -> datetime:
     """
     Retorna a hora atual no fuso horário especificado.
     
     Args:
-        timezone_str: String do fuso horário (ex: 'Asia/Kolkata', 'America/New_York').
+        timezone: String do fuso horário (ex: 'Asia/Kolkata') ou objeto timezone (pytz).
         
     Returns:
         Objeto datetime com a hora atual no fuso especificado.
     """
-    tz = pytz.timezone(timezone_str)
+    tz = pytz.timezone(timezone) if isinstance(timezone, str) else timezone
     return datetime.now(tz)
 
 def is_market_open(current_time: datetime, open_hour: int = 9, open_minute: int = 15, 
