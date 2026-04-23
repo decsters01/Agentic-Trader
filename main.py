@@ -217,9 +217,8 @@ async def reset_daily_state(trading_engine, trade_state):
         
         trading_engine.reset_daily_state()
         
-        # Gerar insights de aprendizado
-        ai_agent_temp = AIAgent(None)  # Criar instância temporária apenas para gerar insights
-        insights = ai_agent_temp.generate_learning_insights(trade_state)
+        # Gerar insights de aprendizado (usando método estático - sem instância desnecessária)
+        insights = AIAgent.generate_learning_insights_static(trade_state)
         print(f"{Fore.CYAN}[INSIGHTS] {insights}{Style.RESET_ALL}\n")
     
     except Exception as e:

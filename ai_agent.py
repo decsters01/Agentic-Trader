@@ -7,7 +7,7 @@ import json
 from colorama import Fore, Style
 
 # Importar configurações
-from config import MODEL_NAME, TEMPERATURE, SENTIMENT_THRESHOLD_BUY, SENTIMENT_THRESHOLD_SELL
+from config import TEMPERATURE, SENTIMENT_THRESHOLD_BUY, SENTIMENT_THRESHOLD_SELL, MODEL_PROVIDER
 
 
 class AIAgent:
@@ -49,8 +49,17 @@ class AIAgent:
         """
 
         try:
+            # Obter nome do modelo baseado no provider
+            model_map = {
+                "cerebras": os.getenv("CEREBRAS_MODEL", "cerebras/gpt-oss-120b"),
+                "groq": os.getenv("GROQ_MODEL", "groq/qwen/qwen3-32b"),
+                "custom": os.getenv("CUSTOM_MODEL", "openai/gpt-4o-mini"),
+                "openai": os.getenv("OPENAI_MODEL", "openai/gpt-5-mini")
+            }
+            model_name = model_map.get(MODEL_PROVIDER, model_map["openai"])
+            
             response = self.client.chat.completions.create(
-                model=MODEL_NAME,
+                model=model_name,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=TEMPERATURE,
                 response_format={"type": "json_object"}
@@ -109,9 +118,11 @@ class AIAgent:
             "reason": f"Win rate {win_rate:.0%}, lucro médio ₹{avg_profit:.2f}, últimos 3 trades: {recent_success}/3 vitórias"
         }
     
-    def generate_learning_insights(self, trade_state: Dict[str, Any]) -> str:
+    @staticmethod
+    def generate_learning_insights_static(trade_state: Dict[str, Any]) -> str:
         """
-        Gerar insights de aprendizado baseados no estado atual dos trades.
+        Gerar insights de aprendizado baseados no estado atual dos trades (método estático).
+        Evita criação desnecessária de instâncias da classe.
         
         Args:
             trade_state: Estado atual do gerenciamento de trades.
@@ -152,6 +163,19 @@ class AIAgent:
             insights.append("Stop loss diário atingido. Importante revisar estratégia.")
         
         return " ".join(insights) if insights else "Sem insights suficientes ainda."
+
+    def generate_learning_insights(self, trade_state: Dict[str, Any]) -> str:
+        """
+        Gerar insights de aprendizado baseados no estado atual dos trades.
+        Wrapper para o método estático.
+        
+        Args:
+            trade_state: Estado atual do gerenciamento de trades.
+            
+        Returns:
+            String com insights e lições aprendidas.
+        """
+        return self.generate_learning_insights_static(trade_state)
     
     def decide_action(self, sentiment_score: float, recommendation: str, 
                      risk_analysis: Dict[str, Any], past_performance: Dict[str, Any]) -> str:
